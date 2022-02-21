@@ -1,4 +1,4 @@
-package data.item;
+package data.treasure.prop;
 public class DemonSlaughterBadge extends Prop{/*惡魔屠殺者徽章*/
     public DemonSlaughterBadge(){
         setPrice(4);

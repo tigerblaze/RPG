@@ -7,9 +7,11 @@ package data.map;
  */
 public abstract class Map {
     private boolean isBossAlive;
+    private int steps;
 
     public Map() {
         this.isBossAlive = true;
+        this.steps = 0;
     }
 
     public boolean isBossAlive() {

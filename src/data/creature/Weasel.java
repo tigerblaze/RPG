@@ -1,6 +1,6 @@
 package data.creature;
 
-import data.item.*;
+import data.treasure.prop.*;
 
 /**
  * @author Lillian

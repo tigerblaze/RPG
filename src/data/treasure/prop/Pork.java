@@ -1,4 +1,4 @@
-package data.item;
+package data.treasure.prop;
 public class Pork extends Prop{/*豬肉*/
     public Pork(){
         setPrice(2);

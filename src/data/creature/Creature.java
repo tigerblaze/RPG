@@ -81,4 +81,8 @@ public class Creature {
         this.exp = exp;
     }
 
+    public boolean isDead(){
+        return this.hp<=0;
+    }
+
 }

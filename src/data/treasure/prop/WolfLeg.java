@@ -1,7 +1,6 @@
-package data.item;
-
-public class AnimalSkin extends Prop{/*動物皮*/
-    public AnimalSkin(){
+package data.treasure.prop;
+public class WolfLeg extends Prop{/*狼腿*/
+    public WolfLeg(){
         setPrice(1);
         setHp(0);
         setDefense(0);
@@ -9,6 +8,5 @@ public class AnimalSkin extends Prop{/*動物皮*/
         setStrength(0);
         setHit(0);
         setUsage("");
-        //hi
     }
 }

@@ -1,6 +1,6 @@
-package data.item;
-public class WolfTooth extends Prop{/*狼牙*/
-    public WolfTooth(){
+package data.treasure.prop;
+public class LionClaw extends Prop{/*獅爪*/
+    public LionClaw(){
         setPrice(1);
         setHp(0);
         setDefense(0);

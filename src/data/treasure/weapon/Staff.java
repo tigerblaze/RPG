@@ -1,4 +1,4 @@
-package data.weapon;
+package data.treasure.weapon;
 
 public class Staff extends Weapon{
     public Staff() {

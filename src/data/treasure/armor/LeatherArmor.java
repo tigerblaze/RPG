@@ -1,4 +1,4 @@
-package data.armor;
+package data.treasure.armor;
 
 public class LeatherArmor extends Armor {
     public LeatherArmor() {

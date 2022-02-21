@@ -1,4 +1,4 @@
-package data.item;
+package data.treasure.prop;
 public class Glass extends Prop{/*玻璃*/
     public Glass(){
         setPrice(1);

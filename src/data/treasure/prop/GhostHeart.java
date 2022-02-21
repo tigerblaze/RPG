@@ -1,6 +1,6 @@
-package data.item;
-public class WolfLeg extends Prop{/*狼腿*/
-    public WolfLeg(){
+package data.treasure.prop;
+public class GhostHeart extends Prop{/*幽魂之心*/
+    public GhostHeart(){
         setPrice(1);
         setHp(0);
         setDefense(0);

@@ -1,4 +1,4 @@
-package data.item;
+package data.treasure.prop;
 public class HealingLotion extends Prop{/*治療藥水*/
     public HealingLotion(){
         setPrice(3);

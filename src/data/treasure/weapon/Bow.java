@@ -1,4 +1,4 @@
-package data.weapon;
+package data.treasure.weapon;
 
 public class Bow extends Weapon {
     public Bow() {

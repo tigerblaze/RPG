@@ -1,5 +1,7 @@
-package data.item;
-public class Prop {
+package data.treasure.prop;
+import data.treasure.Treasure;
+
+public class Prop implements Treasure {
        private int price;
        private int hp;
        private int strength;

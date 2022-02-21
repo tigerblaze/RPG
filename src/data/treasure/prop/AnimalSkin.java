@@ -1,6 +1,7 @@
-package data.item;
-public class LionClaw extends Prop{/*獅爪*/
-    public LionClaw(){
+package data.treasure.prop;
+
+public class AnimalSkin extends Prop{/*動物皮*/
+    public AnimalSkin(){
         setPrice(1);
         setHp(0);
         setDefense(0);
@@ -8,5 +9,6 @@ public class LionClaw extends Prop{/*獅爪*/
         setStrength(0);
         setHit(0);
         setUsage("");
+        //hi
     }
 }
