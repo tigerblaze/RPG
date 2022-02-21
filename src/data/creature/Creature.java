@@ -6,13 +6,13 @@ package data.creature;
  * @date 2022/2/14 下午 12:21
  */
 public class Creature {
-    private int hp;
-    private int agile;
-    private int strength;
-    private int hit;
-    private int defense;
-    private int level;
-    private int exp;
+    protected int hp;
+    protected int agile;
+    protected int strength;
+    protected int hit;
+    protected int defense;
+    protected int level;
+    protected int exp;
 
     public Creature(int hp,int agile,int strength,int hit,int defense,
                     int level, int exp){

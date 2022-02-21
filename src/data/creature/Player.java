@@ -70,23 +70,14 @@ public class Player extends Creature{
         return isBattling;
     }
 
-    public boolean setName(String name) {
-        if(name.isEmpty()){
-            System.out.println("玩家名稱不得為空!");
-            return false;
-        }
-        else if(name.isBlank()){
-            System.out.println("玩家名稱不得為空白!");
-            return false;
-        }
+    public void setName(String name) {
         this.name = name;
-        return true;
     }
 
     public void setWeapon(Weapon weapon) {
         if(this.weapon!=null){
             if(this.weight+this.weapon.getWeight()<weapon.getWeight()){
-                System.out.println("無法更換武器! 因為若換至新武器，您的負重將會超出上限!");
+                System.out.println("無法更換武器! 若換至新武器，您的負重將會超出上限!");
                 return;
             }
             else{
@@ -100,7 +91,7 @@ public class Player extends Creature{
     public void setArmor(Armor armor) {
         if(this.armor!=null){
             if(this.weight+this.armor.getWeight()<armor.getWeight()){
-                System.out.println("無法更換防具! 因為若換至新防具，您的負重將會超出上限!");
+                System.out.println("無法更換防具! 若換至新防具，您的負重將會超出上限!");
                 return;
             }
             else{
@@ -154,7 +145,6 @@ public class Player extends Creature{
         }
         else if(treasure instanceof Prop){
             prop = (Prop) treasure;
-
         }
         else{
             System.out.println("Error in Player.getTreasure()! treasure is neither weapon, armor nor prop!");

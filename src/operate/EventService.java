@@ -39,13 +39,13 @@ public class EventService {
 
     public EventService(Player player, OperateService operateService) {
         this.player = player;
-        this.map = (RANDOM.nextInt(0, 2) == 0) ? new Forest() : new Abyss();
+        this.map = (RANDOM.nextInt(2) == 0) ? new Forest() : new Abyss();
         this.operateService = operateService;
     }
 
     public Event chooseEvent() {
         Event event = Event.NOTHING;
-        int eventNum = RANDOM.nextInt(1, 6);
+        int eventNum = RANDOM.nextInt(6) + 1;
         switch (eventNum) {
             case 1:
                 event = Event.NOTHING;
@@ -85,13 +85,14 @@ public class EventService {
         }
     }
 
+
     public void battle(Enemy enemy) {
         if (enemy == null) return;
         System.out.println("遇到" + enemy + "了");
 
         while (player.getHp() > 0 && enemy.getHp() > 0) {
             System.out.println("1.戰鬥 2.使用道具 3.逃走");
-            int select = Input.inputNumberFilter(1, 2);
+            int select = Input.filterSelection(1, 2);
             if (select == 1) {
                 if (player.getAgile() >= enemy.getAgile()) {
                     attack(player, enemy);
@@ -105,7 +106,7 @@ public class EventService {
                 for (int i = 0; i < items.length; i++) {
                     System.out.println((i + 1) + "." + items[i]);
                 }
-                int index = Input.inputNumberFilter(1, items.length) - 1;
+                int index = Input.filterSelection(1, items.length) - 1;
                 //道具使用
             } else if (select == 3) {
                 if (isEscape(player, enemy)) {
@@ -150,16 +151,19 @@ public class EventService {
                 System.out.println(first + "使出攻擊");
                 hurt = firstAtt - second.getDefense();
                 System.out.println(first + "造成" + hurt + "傷害");
-                hurt = (hurt<0) ? 0: hurt;
-                newHp = (secondHp - hurt <0) ? secondHp - hurt : 0;
+                hurt = Math.max(hurt, 0);
+                newHp = Math.min(secondHp - hurt, 0);
                 second.setHp(newHp);
                 secondHp = newHp;
                 System.out.println(second + "的hp剩下" + secondHp);
+                System.out.println(first + "的hp剩下" + firstHp);
                 if (secondHp == 0) {
-                    if(second instanceof Enemy){
+                    if (second instanceof Enemy) {
                         Enemy enemy = (Enemy) second;
-                        this.player.setExp(this.player.getExp()+enemy.getExp());
+                        this.player.setExp(this.player.getExp() + enemy.getExp());
                         System.out.println("獲得經驗值+" + enemy.getExp());
+                        Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
+                        player.getTreasure(prop);
                     }
                     System.out.println(second + "死了");
                     break;
@@ -172,18 +176,20 @@ public class EventService {
                 System.out.println(second + "使出攻擊");
                 hurt = secondAtt - first.getDefense();
                 System.out.println(second + "造成" + hurt + "傷害");
-                hurt = (hurt<0) ? 0: hurt;
-                newHp = (secondHp - hurt <0) ? secondHp - hurt : 0;
+                hurt = Math.max(hurt, 0);
+                newHp = Math.min(secondHp - hurt, 0);
                 first.setHp(newHp);
                 firstHp = newHp;
                 System.out.println(first + "的hp剩下" + firstHp);
+                System.out.println(second + "的hp剩下" + secondHp);
                 if (firstHp == 0) {
-                    if(first instanceof Enemy){
+                    if (first instanceof Enemy) {
                         Enemy enemy = (Enemy) first;
-                        this.player.setExp(this.player.getExp()+enemy.getExp());
+                        this.player.setExp(this.player.getExp() + enemy.getExp());
                         System.out.println("獲得經驗值+" + enemy.getExp());
-                    }
-                    else{
+                        Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
+                        player.getTreasure(prop);
+                    } else {
                         System.out.println(first + "死了");
                     }
                     break;
@@ -204,13 +210,6 @@ public class EventService {
         System.out.println("獲得經驗值+" + enemy.getExp());
     }
 
-    /**
-     * 將死亡怪物的掉落物給玩家
-     * @param enemy
-     */
-    public void killEnemyGetProp(Enemy enemy){
-
-    }
 
     /**
      * @param attack  攻擊方
