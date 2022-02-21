@@ -21,4 +21,12 @@ public abstract class Map {
     public void setBossAlive(boolean bossAlive) {
         isBossAlive = bossAlive;
     }
+
+    public int getSteps() {
+        return steps;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
 }

@@ -10,6 +10,7 @@ import data.treasure.prop.Prop;
 public class Enemy extends Creature{
     private Prop[] drops;
     private EnemyType enemyType;
+    private boolean isActive = true;
 
     public Enemy(int hp, int agile, int strength, int hit, int defense, int level, int exp, EnemyType enemyType) {
         super(hp, agile, strength, hit, defense, level, exp);
@@ -30,5 +31,13 @@ public class Enemy extends Creature{
 
     public Prop[] getDrops(){
         return drops;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

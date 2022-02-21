@@ -43,46 +43,36 @@ public class EventService {
         this.operateService = operateService;
     }
 
-    public Event chooseEvent() {
+
+    public Event exeRandomEvent() {
         Event event = Event.NOTHING;
-        int eventNum = RANDOM.nextInt(6) + 1;
+        int eventNum = RANDOM.nextInt(5) + 1;
+        while(eventNum==2){ //目前不會遇到被動怪
+            eventNum = RANDOM.nextInt(5) + 1;
+        }
         switch (eventNum) {
             case 1:
+                System.out.println("沒事發生");
                 event = Event.NOTHING;
                 break;
             case 2:
                 event = Event.MEET_PASSIVE_ENEMY;
+                meetPassiveEnemy();
                 break;
             case 3:
                 event = Event.MEET_ACTIVE_ENEMY;
+                chooseActiveEnemy();
                 break;
             case 4:
                 event = Event.BRANCH;
+                branch();
                 break;
             case 5:
                 event = Event.GET_TREASURE;
-                break;
-        }
-        return event;
-    }
-
-    public void exeEvent(Event event) {
-        switch (event) {
-            case NOTHING:
-                break;
-            case MEET_PASSIVE_ENEMY:
-                meetActiveEnemy();
-                break;
-            case MEET_ACTIVE_ENEMY:
-                meetPassiveEnemy();
-                break;
-            case BRANCH:
-                branch();
-                break;
-            case GET_TREASURE:
                 getTreasure();
                 break;
         }
+        return event;
     }
 
 
@@ -265,7 +255,7 @@ public class EventService {
         return;
     }
 
-    public void meetActiveEnemy() {
+    public void chooseActiveEnemy() {
         String currentMap = this.map.getClass().getSimpleName();
         Enemy nextEnemy = null;
         switch (currentMap) {
@@ -314,6 +304,14 @@ public class EventService {
     }
 
     public void branch() {
+        System.out.println("遇到岔路，你要往哪邊走呢？\n1.左邊 2.右邊 3.不走了回家");
+        int input = Input.filterSelection(1,3);
+        if(input!=3) {
+            operateService.go();
+        }else{
+            System.out.println("回家吧！掰掰！");
+            System.exit(0);//好玩用的
+        }
     }
 
     public void getTreasure() {
