@@ -102,13 +102,13 @@ public class EventService {
             } else if (select == 3) {
                 if (isEscape(player, enemy)) {
                     System.out.println("跑了！跑了！");
-                    player.setBattling(false);
                     break;
                 } else {
                     System.out.println("逃不掉....");
                 }
             }
         }
+        player.setBattling(false);
     }
 
     /**
