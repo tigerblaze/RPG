@@ -5,13 +5,16 @@ package data.map;
  * @Description
  * @date 2022/2/18 下午 08:17
  */
-public abstract class Map {
+public abstract class RpgMap {
     private boolean isBossAlive;
     private int steps;
 
-    public Map() {
+    public RpgMap() {
         this.isBossAlive = true;
         this.steps = 0;
+    }
+    public void go(){
+        this.steps++;
     }
 
     public boolean isBossAlive() {

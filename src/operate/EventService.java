@@ -14,10 +14,16 @@ import data.treasure.prop.StrengthEnhanceLotion;
 
 
 public class EventService {
-    private Player player;
-    private Map map;
-    private OperateService operateService;
     private static final Random RANDOM = new Random();
+    private static final int FOREST_MAP = 0;
+    private static final int ABYSS_MAP = 1;
+
+    private Player player;
+    private RpgMap rpgMap;
+    /**
+     * 兩個地圖都clear才通關
+     */
+    private RpgMap[] gamePassMaps;
 
     public enum Event {
         NOTHING("沒事發生"),
@@ -37,17 +43,18 @@ public class EventService {
         }
     }
 
-    public EventService(Player player, OperateService operateService) {
+    public EventService(Player player) {
         this.player = player;
-        this.map = (RANDOM.nextInt(2) == 0) ? new Forest() : new Abyss();
-        this.operateService = operateService;
+        gamePassMaps = new RpgMap[2];
+        gamePassMaps[FOREST_MAP] = new Forest();
+        gamePassMaps[ABYSS_MAP] = new Abyss();
+        this.rpgMap = (RANDOM.nextInt(2) == 0) ? gamePassMaps[FOREST_MAP] : gamePassMaps[ABYSS_MAP];
     }
-
 
     public Event exeRandomEvent() {
         Event event = Event.NOTHING;
         int eventNum = RANDOM.nextInt(5) + 1;
-        while(eventNum==2){ //目前不會遇到被動怪
+        while (eventNum == 2) { //目前不會遇到被動怪
             eventNum = RANDOM.nextInt(5) + 1;
         }
         switch (eventNum) {
@@ -75,9 +82,10 @@ public class EventService {
         return event;
     }
 
-
     public void battle(Enemy enemy) {
-        if (enemy == null) return;
+        if (enemy == null) {
+            return;
+        }
         System.out.println("遇到" + enemy + "了");
         player.setBattling(true);
 
@@ -91,14 +99,11 @@ public class EventService {
                     attack(enemy, player);
                 }
             } else if (select == 2) {
-                //調用operate
                 System.out.println("選擇要使用的道具：");
-                Prop[] items = player.getItems();
-                for (int i = 0; i < items.length; i++) {
-                    System.out.println((i + 1) + "." + items[i]);
-                }
-                int index = Input.filterSelection(1, items.length) - 1;
-                //道具使用
+                player.showItems();
+                int index = Input.filterSelection(1, player.getItems().length) - 1;
+                player.useProp(player.chooseItem(index));
+
             } else if (select == 3) {
                 if (isEscape(player, enemy)) {
                     System.out.println("跑了！跑了！");
@@ -156,8 +161,12 @@ public class EventService {
                         System.out.println("獲得經驗值+" + enemy.getExp());
                         Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
                         player.getTreasure(prop);
+                        if(enemy.getType()==EnemyType.ANIMAL_BOSS || enemy.getType()==EnemyType.MONSTER_BOSS){
+                            clearChangeMap();
+                        }
                     }
                     System.out.println(second + "死了");
+                    player.buffArrayRun();
                     break;
                 }
             } else {
@@ -181,27 +190,21 @@ public class EventService {
                         System.out.println("獲得經驗值+" + enemy.getExp());
                         Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
                         player.getTreasure(prop);
+                        if(enemy.getType()==EnemyType.ANIMAL_BOSS || enemy.getType()==EnemyType.MONSTER_BOSS){
+                            clearChangeMap();
+                        }
                     } else {
                         System.out.println(first + "死了");
                     }
+                    player.buffArrayRun();
                     break;
                 }
             } else {
                 System.out.println(second + "使出攻擊但沒打到");
             }
+            player.buffArrayRun();
         }
     }
-
-    /**
-     * 將死亡怪物的經驗值給玩家
-     * @param enemy 被擊殺的怪物
-     */
-    public void killEnemyGetExp(Enemy enemy) {
-        int exp = player.getExp();
-        player.setExp(exp + enemy.getExp());
-        System.out.println("獲得經驗值+" + enemy.getExp());
-    }
-
 
     /**
      * @param attack  攻擊方
@@ -258,40 +261,40 @@ public class EventService {
     }
 
     public void chooseActiveEnemy() {
-        String currentMap = this.map.getClass().getSimpleName();
+        String currentMap = this.rpgMap.getClass().getSimpleName();
         Enemy nextEnemy = null;
         switch (currentMap) {
-            case "Forest" -> {
-                if (this.map.getSteps() == 5) {
+            case "Forest" : {
+                if (this.rpgMap.getSteps() == 5) {
                     nextEnemy = new Elephant();
                 } else {
                     Forest.Animal nextAnimal = Forest.Animal.randomAnimal();
                     switch (nextAnimal) {
-                        case WOLF -> {
+                        case WOLF : {
                             nextEnemy = new Wolf();
                         }
-                        case LION -> {
+                        case LION : {
                             nextEnemy = new Lion();
                         }
-                        case BOAR -> {
+                        case BOAR : {
                             nextEnemy = new Boar();
                         }
                     }
                 }
             }
-            case "Abyss" -> {
-                if (this.map.getSteps() == 5) {
+            case "Abyss" : {
+                if (this.rpgMap.getSteps() == 5) {
                     nextEnemy = new Bahamut();
                 } else {
                     Abyss.Monster nextMonster = Abyss.Monster.randomMonster();
                     switch (nextMonster) {
-                        case MAGICWOLF -> {
+                        case MAGICWOLF : {
                             nextEnemy = new Wolf();
                         }
-                        case WEASEL -> {
+                        case WEASEL: {
                             nextEnemy = new Lion();
                         }
-                        case GHOST -> {
+                        case GHOST : {
                             nextEnemy = new Boar();
                         }
                     }
@@ -307,43 +310,43 @@ public class EventService {
 
     public void branch() {
         System.out.println("遇到岔路，你要往哪邊走呢？\n1.左邊 2.右邊 3.不走了回家");
-        int input = Input.filterSelection(1,3);
-        if(input!=3) {
-            operateService.go();
-        }else{
+        int input = Input.filterSelection(1, 3);
+        if (input != 3) {
+            rpgMap.go();
+        } else {
             System.out.println("回家吧！掰掰！");
             System.exit(0);//好玩用的
         }
     }
 
     public void getTreasure() {
-        String currentMap = this.map.getClass().getSimpleName();
+        String currentMap = this.rpgMap.getClass().getSimpleName();
         Treasure treasure = null;
         switch (currentMap) {
-            case "Forest" -> {
+            case "Forest": {
                 Forest.Treasure forestTreasure = Forest.Treasure.randomTreasure();
                 switch (forestTreasure) {
-                    case HEALINGLOTION -> {
+                    case HEALINGLOTION: {
                         treasure = new HealingLotion();
                     }
-                    case STRENGTHENHANCELOTION -> {
+                    case STRENGTHENHANCELOTION: {
                         treasure = new StrengthEnhanceLotion();
                     }
-                    case ARROW -> {
+                    case ARROW: {
                         treasure = new Bow();
                     }
                 }
             }
-            case "Abyss" -> {
+            case "Abyss": {
                 Abyss.Treasure abyssTreasure = Abyss.Treasure.randomTreasure();
                 switch (abyssTreasure) {
-                    case lEATHERARMOR -> {
+                    case lEATHERARMOR: {
                         treasure = new LeatherArmor();
                     }
-                    case STRENGTHENHANCELOTION -> {
+                    case STRENGTHENHANCELOTION: {
                         treasure = new StrengthEnhanceLotion();
                     }
-                    case HEALINGLOTION -> {
+                    case HEALINGLOTION: {
                         treasure = new HealingLotion();
                     }
                 }
@@ -355,6 +358,27 @@ public class EventService {
             this.player.getTreasure(treasure);
         }
     }
+
+    /**
+     * 遊戲是否通關
+     * @return 遊戲是否通關
+     */
+    public boolean isGamePass(){
+        return (!gamePassMaps[0].isBossAlive() && !gamePassMaps[1].isBossAlive());
+    }
+
+    /**
+     * 打贏BOSS換地圖
+     */
+    private void clearChangeMap(){
+        if(rpgMap instanceof Forest){
+            rpgMap = gamePassMaps[ABYSS_MAP];
+        }else if(rpgMap instanceof Abyss){
+            rpgMap = gamePassMaps[FOREST_MAP];
+        }
+    }
+    
+  
 
 
 }

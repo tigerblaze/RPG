@@ -8,5 +8,7 @@ public class Glass extends Prop{/*玻璃*/
         setStrength(0);
         setHit(0);
         setUsage("");
+        setIsBuff(false);
+        setBuffRounds(0);
     }
 }

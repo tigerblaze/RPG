@@ -10,6 +10,8 @@ public class Prop implements Treasure {
        private int hit;
        private int agile;
        private int times;
+       private boolean isBuff;
+       private int buffRounds;
 
        String name,usage;
        public String getName(){return this.name;}
@@ -24,17 +26,62 @@ public class Prop implements Treasure {
        public int getAgile() {
               return agile;
        }
+       public int getTimes() {
+              return times;
+       }
+       public boolean isBuff(){
+              return this.isBuff;
+       }
 
        public void setPrice(int price){this.price = price;}
        public void setHp(int hp){this.hp = hp;}
        public void setStrength(int strength){this.strength = strength;}
        public void setDefense(int defense){this.defense = defense;}
        public void setAttack(int attack){this.attack = attack;}
-       public void setHit(int defense){this.hit = hit;}
+       public void setHit(int defense){this.hit = defense;}
        public void setUsage(String usage){this.usage = usage;}
        public void setAgile(int agile) {
               this.agile = agile;
        }
+       public void setTimes(int times){this.times = times;}/*BUFF存在回"次數" 0:一次性 -1:其他判定 */
+       public void setIsBuff(boolean isBuff){
+              this.isBuff = true;
+       }
+       public void setBuffRounds(int buffRounds){
+              this.buffRounds = buffRounds;
+       }
 
-       public void setTimes(int times){this.usage = usage;}/*BUFF存在回"次數" 0:永久存在 -1:其他判定 */
+
+       public Prop(){
+       }
+
+
+       /**
+        * 建立反向屬性道具
+        * @param buffCancel
+        */
+       public Prop(Prop buffCancel){
+              buffCancel.setHp( -buffCancel.getHp());
+              buffCancel.setStrength( -buffCancel.getStrength());
+              buffCancel.setDefense( -buffCancel.getDefense());
+              buffCancel.setAttack( -buffCancel.getAttack());
+              buffCancel.setHit( -buffCancel.getHit());
+              buffCancel.setAgile( -buffCancel.getAgile());
+              buffCancel.setTimes(buffCancel.getTimes()-1);
+       }
+
+       /**
+        * 建立反向屬性道具
+        * @param buffCancel
+        * @param times
+        */
+       public Prop(Prop buffCancel, int times){
+              buffCancel.setHp( -buffCancel.getHp());
+              buffCancel.setStrength( -buffCancel.getStrength());
+              buffCancel.setDefense( -buffCancel.getDefense());
+              buffCancel.setAttack( -buffCancel.getAttack());
+              buffCancel.setHit( -buffCancel.getHit());
+              buffCancel.setAgile( -buffCancel.getAgile());
+              buffCancel.setTimes(times);
+       }
 }

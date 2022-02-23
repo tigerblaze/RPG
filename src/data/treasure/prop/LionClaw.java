@@ -8,5 +8,7 @@ public class LionClaw extends Prop{/*獅爪*/
         setStrength(0);
         setHit(0);
         setUsage("");
+        setIsBuff(false);
+        setBuffRounds(0);
     }
 }

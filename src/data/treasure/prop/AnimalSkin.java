@@ -9,6 +9,8 @@ public class AnimalSkin extends Prop{/*動物皮*/
         setStrength(0);
         setHit(0);
         setUsage("");
+        setIsBuff(false);
+        setBuffRounds(0);
         //hi
     }
 }

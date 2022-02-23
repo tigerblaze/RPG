@@ -1,45 +1,58 @@
 package data.creature;
+
 import data.treasure.Treasure;
 import data.treasure.weapon.*;
 import data.treasure.armor.*;
 import data.treasure.prop.*;
+import operate.Input;
 
-public class Player extends Creature{
+import java.util.ArrayList;
+
+public class Player extends Creature {
     private String name;
     private Weapon weapon = null;
     private Armor armor = null;
     private Prop[] items;
+    private Prop[] accessories;
+    private ArrayList<Prop> buffs;
     private int numOfItems;
     private int weight;
     private int upgradeExp;
     private boolean isBattling;
 
-    public Player(String name){
-        super(5,5,5,5,5,1,0);
+    /**
+     * 遊戲中徽章的種類數量
+     */
+    private static final int DEFAULT_ACCESSORIES_NUM = 2;
+
+    public Player(String name) {
+        super(5, 5, 5, 5, 5, 1, 0);
         this.name = name;
         this.upgradeExp = 10;
         items = new Prop[5];
-        this.weight = strength*6;
+        this.weight = strength * 6;
+        buffs = new ArrayList<>();
+        accessories = new Prop[DEFAULT_ACCESSORIES_NUM];
     }
 
-    public boolean isReadyToLevelUp(){
-        return this.exp>this.upgradeExp;
+    public boolean isReadyToLevelUp() {
+        return this.exp > this.upgradeExp;
     }
 
-    public void addExp(int exp){
+    public void addExp(int exp) {
         this.exp += exp;
-        if(isReadyToLevelUp()){
+        if (isReadyToLevelUp()) {
             levelUp();
         }
     }
 
-    public void levelUp(){
-        upgradeExp*=2;
-        hp+=2;
-        agile+=2;
-        strength+=2;
-        hit+=2;
-        defense+=2;
+    public void levelUp() {
+        upgradeExp *= 2;
+        hp += 2;
+        agile += 2;
+        strength += 2;
+        hit += 2;
+        defense += 2;
     }
 
     public String getName() {
@@ -62,7 +75,7 @@ public class Player extends Creature{
         return weight;
     }
 
-    public int getUpgradeExp(){
+    public int getUpgradeExp() {
         return upgradeExp;
     }
 
@@ -75,12 +88,11 @@ public class Player extends Creature{
     }
 
     public void setWeapon(Weapon weapon) {
-        if(this.weapon!=null){
-            if(this.weight+this.weapon.getWeight()<weapon.getWeight()){
+        if (this.weapon != null) {
+            if (this.weight + this.weapon.getWeight() < weapon.getWeight()) {
                 System.out.println("無法更換武器! 若換至新武器，您的負重將會超出上限!");
                 return;
-            }
-            else{
+            } else {
                 this.weight += this.weapon.getWeight();
             }
         }
@@ -89,12 +101,11 @@ public class Player extends Creature{
     }
 
     public void setArmor(Armor armor) {
-        if(this.armor!=null){
-            if(this.weight+this.armor.getWeight()<armor.getWeight()){
+        if (this.armor != null) {
+            if (this.weight + this.armor.getWeight() < armor.getWeight()) {
                 System.out.println("無法更換防具! 若換至新防具，您的負重將會超出上限!");
                 return;
-            }
-            else{
+            } else {
                 this.weight += this.armor.getWeight();
             }
         }
@@ -106,23 +117,23 @@ public class Player extends Creature{
         this.items = items;
     }
 
-    public boolean isItemsFull(){
-        return (this.items.length==this.numOfItems);
+    public boolean isItemsFull() {
+        return (this.items.length == this.numOfItems);
     }
 
-    public void addItem(Prop prop){
-        if(isItemsFull()){
+    public void addItem(Prop prop) {
+        if (isItemsFull()) {
             System.out.println("無法撿取道具!已達道具上限!");
-        }
-        else{
+        } else {
             this.items[this.numOfItems++] = prop;
         }
     }
+
     public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public void setUpgradeExp(int upgradeExp){
+    public void setUpgradeExp(int upgradeExp) {
         this.upgradeExp = upgradeExp;
     }
 
@@ -130,24 +141,126 @@ public class Player extends Creature{
         isBattling = battling;
     }
 
-    public void getTreasure(Treasure treasure){
+    public void getTreasure(Treasure treasure) {
         String treasureType = treasure.getClass().getSimpleName();
         Weapon weapon = null;
         Armor armor = null;
         Prop prop = null;
-        if(treasure instanceof Weapon){
+        if (treasure instanceof Weapon) {
             weapon = (Weapon) treasure;
             setWeapon(weapon);
-        }
-        else if(treasure instanceof Armor){
+        } else if (treasure instanceof Armor) {
             armor = (Armor) treasure;
             setArmor(armor);
-        }
-        else if(treasure instanceof Prop){
+        } else if (treasure instanceof Prop) {
             prop = (Prop) treasure;
-        }
-        else{
+        } else {
             System.out.println("Error in Player.getTreasure()! treasure is neither weapon, armor nor prop!");
         }
     }
+
+
+    /**
+     * buff說明：
+     * 1.將藥水屬性直接加到角色身上 假如有持續回合 製造一個反向的道具紀錄在buffs裡面
+     * 2.每次攻擊後判定 假如反向藥水回合記數歸零 則使用這瓶反向藥水(加到角色身上);
+     */
+
+    /**
+     * 使用道具
+     *
+     * @param prop 使用哪個道具
+     */
+    public void useProp(Prop prop) {
+        this.hp += prop.getHp();
+        this.strength += prop.getStrength();
+        this.defense += prop.getDefense();
+        this.hit += prop.getHit();
+        this.agile += prop.getAgile();
+        //有作用回合限制
+        if (prop.getTimes() > 0) {
+            buffs.add(new Prop(prop));
+        }
+        //飾品類的反向道具
+        if (prop.getTimes() == -1) {
+            buffs.add(new Prop(prop, 0));
+        }
+    }
+
+    /**
+     * @param prop 反向道具，將原buff狀態改回來
+     * @return 反向道具的剩餘次數
+     */
+    public int buffRun(Prop prop) {
+        int times = prop.getTimes();
+        if (times > 0) {
+            //buff繼續，效果還沒消失
+            prop.setTimes(times - 1);
+        } else if (prop.getTimes() == 0) { //buff效果結束
+            useProp(prop); //使用反向道具
+        }
+        return prop.getTimes();
+    }
+
+    /**
+     * 每回合跑一次buff陣列來減少存在回合或是結束
+     */
+    public void buffArrayRun() {
+        for (int i = 0; i < buffs.size(); i++) {
+            if (this.buffRun(buffs.get(i)) == 0) {
+                buffs.remove(i); //buff效果結束，從buff欄移除
+                i--;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    /**
+     * 顯示玩家詳情
+     */
+    public void showDetail() {
+        System.out.println(name
+                + "\n血量：" + hp
+                + "\n等級：" + level
+                + "\n敏捷：" + agile
+                + "\n力量：" + strength
+                + "\n命中：" + hit
+                + "\n防禦：" + defense
+                + "\n負重：" + (weapon.getWeight() + armor.getWeight()) + " / " + weight
+                + "\n武器：" + weapon
+                + "\n防具：" + armor
+        );
+    }
+
+    /**
+     * 顯示道具欄
+     */
+    public void showItems(){
+        for (int i = 0; i < items.length; i++) {
+            if(items[i]!=null) {
+                System.out.println((i + 1) + "." + items[i]);
+            }else {
+                System.out.println((i + 1) + "."+ "空格");
+            }
+        }
+    }
+
+
+    /**
+     * 選擇道具
+     * @param index 道具欄索引
+     * @return 選到的道具
+     */
+    public Prop chooseItem(int index){
+        Prop result =items[index];
+        this.getItems()[index] = null;
+        return result;
+    }
+
+
+
 }

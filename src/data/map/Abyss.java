@@ -8,7 +8,7 @@ import java.util.Random;
  * @Description
  * @date 2022/2/18 下午 08:34
  */
-public class Abyss extends Map{
+public class Abyss extends RpgMap {
     public enum Monster{
         MAGICWOLF, WEASEL, GHOST;//, BAHAMUT;
         private static final List<Abyss.Monster> VALUES = List.of(values());

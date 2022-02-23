@@ -8,5 +8,7 @@ public class WolfLeg extends Prop{/*狼腿*/
         setStrength(0);
         setHit(0);
         setUsage("");
+        setIsBuff(false);
+        setBuffRounds(0);
     }
 }

@@ -9,5 +9,7 @@ public class HealingLotion extends Prop{/*治療藥水*/
         setHit(0);
         setUsage("回復3滴血量");
         setTimes(0);
+        setIsBuff(false);
+        setBuffRounds(0);
     }
 }
