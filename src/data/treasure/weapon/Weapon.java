@@ -6,21 +6,23 @@ import data.treasure.Treasure;
 import java.util.List;
 import java.util.Random;
 
-public class Weapon implements Treasure {
-    public enum initialWeapons{
-        SWORD, AX, STAFF;
-        private static final List<initialWeapons> VALUES = List.of(values());
-        private static final int SIZE = VALUES.size();
-        private static final Random RANDOM = new Random();
-        public static initialWeapons randomTreasure()  {
-            return VALUES.get(RANDOM.nextInt(SIZE));
-        }
-    }
+public abstract class Weapon implements Treasure {
 
     private int weight;
     private int attack;
 
-    public Weapon() {
+    public static String getInitialWeaponInfo(){
+        Weapon[] initialWeapons = {new Sword(), new Ax(), new Staff()};
+        StringBuilder sb = new StringBuilder();
+        int i=1;
+        sb.append("-----------------------\n");
+        for(Weapon weapon:initialWeapons){
+            sb.append(i++ + ". ");
+            sb.append(weapon);
+            sb.append("\n");
+        }
+        sb.append("-----------------------");
+        return sb.toString();
     }
 
     public Weapon(int weight, int attack) {
@@ -44,8 +46,9 @@ public class Weapon implements Treasure {
         this.attack = attack;
     }
 
-    public String getWeaponDetail(){
-        return "Weight: "+ weight + ", Attack:" + attack;
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + " Weight: "+ weight + ", Attack:" + attack;
     }
 }
 

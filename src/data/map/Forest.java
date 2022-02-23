@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Forest extends RpgMap {
     public enum Animal{
-        WOLF, LION, BOAR;//, ELEPHANT;
+        WOLF, LION, BOAR, ELEPHANT;
         private static final List<Animal> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
@@ -20,7 +20,7 @@ public class Forest extends RpgMap {
     }
 
     public enum Treasure{
-        HEALINGLOTION, STRENGTHENHANCELOTION, ARROW;
+        HEALING_LOTION, STRENGTH_ENHANCE_LOTION, ARROW;
         private static final List<Treasure> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();

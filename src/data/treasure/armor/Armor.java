@@ -19,7 +19,18 @@ public class Armor implements Treasure {
     private int weight;
     private int defense;
 
-    public Armor() {
+    public static String getInitialArmorInfo(){
+        Armor[] initialArmors = {new WoodenArmor(), new ChainArmor(), new PlateArmor()};
+        StringBuilder sb = new StringBuilder();
+        int i=1;
+        sb.append("-----------------------\n");
+        for(Armor armor:initialArmors){
+            sb.append(i++ + ". ");
+            sb.append(armor);
+            sb.append("\n");
+        }
+        sb.append("-----------------------");
+        return sb.toString();
     }
 
     public Armor(int weight, int defense) {
@@ -43,8 +54,9 @@ public class Armor implements Treasure {
         this.defense = defense;
     }
 
-    public String getArmorDetail(){
-        return "Weight: "+ weight + ", Defense:" + defense;
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + " Weight: "+ weight + ", Defense:" + defense;
     }
 }
 

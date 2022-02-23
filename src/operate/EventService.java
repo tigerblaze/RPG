@@ -6,7 +6,6 @@ import data.map.*;
 import data.creature.*;
 
 import data.treasure.Treasure;
-import data.treasure.prop.Prop;
 import data.treasure.weapon.Bow;
 import data.treasure.armor.LeatherArmor;
 import data.treasure.prop.HealingLotion;
@@ -79,6 +78,7 @@ public class EventService {
                 getTreasure();
                 break;
         }
+        this.rpgMap.go();
         return event;
     }
 
@@ -279,6 +279,9 @@ public class EventService {
                         case BOAR : {
                             nextEnemy = new Boar();
                         }
+                        case ELEPHANT:{
+                            nextEnemy = new Elephant();
+                        }
                     }
                 }
             }
@@ -288,7 +291,7 @@ public class EventService {
                 } else {
                     Abyss.Monster nextMonster = Abyss.Monster.randomMonster();
                     switch (nextMonster) {
-                        case MAGICWOLF : {
+                        case MAGIC_WOLF: {
                             nextEnemy = new Wolf();
                         }
                         case WEASEL: {
@@ -296,6 +299,9 @@ public class EventService {
                         }
                         case GHOST : {
                             nextEnemy = new Boar();
+                        }
+                        case BAHAMUT:{
+                            nextEnemy = new Bahamut();
                         }
                     }
                 }
@@ -311,9 +317,7 @@ public class EventService {
     public void branch() {
         System.out.println("遇到岔路，你要往哪邊走呢？\n1.左邊 2.右邊 3.不走了回家");
         int input = Input.filterSelection(1, 3);
-        if (input != 3) {
-            rpgMap.go();
-        } else {
+        if (input==3) {
             System.out.println("回家吧！掰掰！");
             System.exit(0);//好玩用的
         }
@@ -326,10 +330,10 @@ public class EventService {
             case "Forest": {
                 Forest.Treasure forestTreasure = Forest.Treasure.randomTreasure();
                 switch (forestTreasure) {
-                    case HEALINGLOTION: {
+                    case HEALING_LOTION: {
                         treasure = new HealingLotion();
                     }
-                    case STRENGTHENHANCELOTION: {
+                    case STRENGTH_ENHANCE_LOTION: {
                         treasure = new StrengthEnhanceLotion();
                     }
                     case ARROW: {
@@ -340,13 +344,13 @@ public class EventService {
             case "Abyss": {
                 Abyss.Treasure abyssTreasure = Abyss.Treasure.randomTreasure();
                 switch (abyssTreasure) {
-                    case lEATHERARMOR: {
+                    case LEATHER_ARMOR: {
                         treasure = new LeatherArmor();
                     }
-                    case STRENGTHENHANCELOTION: {
+                    case STRENGTH_ENHANCE_LOTION: {
                         treasure = new StrengthEnhanceLotion();
                     }
-                    case HEALINGLOTION: {
+                    case HEALING_LOTION: {
                         treasure = new HealingLotion();
                     }
                 }

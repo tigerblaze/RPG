@@ -88,28 +88,30 @@ public class Player extends Creature {
     }
 
     public void setWeapon(Weapon weapon) {
+        int armorWeight = (this.armor==null) ? 0 : this.armor.getWeight();
         if (this.weapon != null) {
-            if (this.weight + this.weapon.getWeight() < weapon.getWeight()) {
+            if (this.weight - armorWeight - weapon.getWeight() < 0) {
                 System.out.println("無法更換武器! 若換至新武器，您的負重將會超出上限!");
                 return;
             } else {
                 this.weight += this.weapon.getWeight();
             }
         }
-        this.weight -= weapon.getWeight();
+//        this.weight -= weapon.getWeight();
         this.weapon = weapon;
     }
 
     public void setArmor(Armor armor) {
+        int weaponWeight = (this.weapon==null) ? 0 : this.weapon.getWeight();
         if (this.armor != null) {
-            if (this.weight + this.armor.getWeight() < armor.getWeight()) {
+            if (this.weight - weaponWeight - armor.getWeight() < 0) {
                 System.out.println("無法更換防具! 若換至新防具，您的負重將會超出上限!");
                 return;
             } else {
                 this.weight += this.armor.getWeight();
             }
         }
-        this.weight -= armor.getWeight();
+//        this.weight -= armor.getWeight();
         this.armor = armor;
     }
 
@@ -230,7 +232,7 @@ public class Player extends Creature {
                 + "\n力量：" + strength
                 + "\n命中：" + hit
                 + "\n防禦：" + defense
-                + "\n負重：" + (weapon.getWeight() + armor.getWeight()) + " / " + weight
+                + "\n負重：" + (weapon.getWeight() + armor.getWeight()) + " / " + this.weight
                 + "\n武器：" + weapon
                 + "\n防具：" + armor
         );
@@ -244,7 +246,7 @@ public class Player extends Creature {
             if(items[i]!=null) {
                 System.out.println((i + 1) + "." + items[i]);
             }else {
-                System.out.println((i + 1) + "."+ "空格");
+                System.out.println((i + 1) + ".");
             }
         }
     }

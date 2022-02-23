@@ -13,7 +13,7 @@ public class Input {
         while (true) {
             try {
                 String input = SCANNER.nextLine();
-                input = input.replace(" ","");
+                input = input.replace(" ", "");
                 input = input.toLowerCase();
                 if ("go".equals(input) || "status".equals(input) || "supply".equals(input)) {
                     String clear = SCANNER.nextLine();
@@ -29,20 +29,36 @@ public class Input {
     /**
      * 道具操作的輸入限制
      */
-    public static String getItemActionInput() {
+    public static int getItemActionInput(int[] index) {
         while (true) {
-            try {
-                String input = SCANNER.nextLine();
-                input = input.replace(" ","");
-                input = input.toLowerCase(Locale.ROOT);
-                if ("status".equals(input) || "use".equals(input) || "exit".equals(input)) {
+            String input = SCANNER.next();
+            input = input.toLowerCase(Locale.ROOT);
+            if (input.equals("exit")) {
+                return Main.ITEM_EXIT;
+            } else {
+                try {
+                    //取得道具index
+                    int parse = Integer.parseInt(input);
+                    if (parse > 5 || parse < 1) {
+                        return -1;
+                    } else {
+                        String select = SCANNER.nextLine();
+                        select = select.replace(" ","");
+                        String selectLowerCase = select.toLowerCase();
+                        if(selectLowerCase.equals("status")){
+                            index[0] = parse;
+                            return Main.ITEM_STATUS;
+                        }else if(selectLowerCase.equals("use")){
+                            index[0] = parse;
+                            return Main.ITEM_USE;
+                        }
+                    }
+                }catch (Exception e){
+                    System.out.println("輸入錯誤");
                     String clear = SCANNER.nextLine();
-                    return input;
                 }
-            } catch (Exception e) {
-                System.out.println("輸入錯誤請重新輸入 \"status\",\"use\",\"exit\"");
-                String clear = SCANNER.nextLine();//清除無用字符
             }
+
         }
     }
 

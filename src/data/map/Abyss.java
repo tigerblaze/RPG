@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Abyss extends RpgMap {
     public enum Monster{
-        MAGICWOLF, WEASEL, GHOST;//, BAHAMUT;
+        MAGIC_WOLF, WEASEL, GHOST;//, BAHAMUT;
         private static final List<Abyss.Monster> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
@@ -19,7 +19,7 @@ public class Abyss extends RpgMap {
         }
     }
     public enum Treasure{
-        lEATHERARMOR, STRENGTHENHANCELOTION, HEALINGLOTION;
+        LEATHER_ARMOR, STRENGTH_ENHANCE_LOTION, HEALING_LOTION;
         private static final List<Treasure> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
