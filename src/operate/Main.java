@@ -2,6 +2,7 @@ package operate;
 
 import data.creature.*;
 import data.treasure.armor.*;
+import data.treasure.prop.Prop;
 import data.treasure.weapon.*;
 
 public class Main {
@@ -45,6 +46,10 @@ public class Main {
         System.out.println("請輸入角色名稱");
         String name = Input.filterBlankString();
         Player player = new Player(name);
+        /**
+         * 死亡復活後要回到死亡前的hp
+         */
+        int preHp ;
 
         System.out.println("請選擇武器");
         System.out.println(Weapon.getInitialWeaponInfo());
@@ -80,10 +85,13 @@ public class Main {
         }
         //新建對象(操作,環境)，控制觸發事件
         EventService eventService = new EventService(player);
+        System.out.println("你來到到了" + eventService.getRpgMap());
+        Input.pauseAndContinue();
 
         boolean isGameOver = false;
         //基礎操作
         while (!isGameOver) {
+            preHp = player.getHp(); //死亡要回到這個血量
             System.out.println("""
                                 要做什麼呢？
                                 go -> 往前走一步
@@ -104,34 +112,50 @@ public class Main {
                 case SUPPLY: {
                     boolean isItemOpen = true;
                     while (isItemOpen) {
-                        player.showItems();
+                        player.showItems(); //印出道具
                         System.out.println("""
                                 請輸入指令: 顯示相關的物品說明
                                 "1~5 status":使用該物品
                                 "1~5 use":使用該物品
                                 "exit": 退出物品欄""");
-
                         int itemAction = Input.getItemActionInput(ITEM_INDEX_ARRAY);//選擇顯示說明 使用 離開
+                        Prop prop = player.chooseItem(ITEM_INDEX_ARRAY[ITEM_INDEX]);
                         switch (itemAction) {
                             case ITEM_STATUS: {  //調用物品方法(陣列序號)
-                                System.out.println(player.chooseItem(ITEM_INDEX_ARRAY[ITEM_INDEX]));
+                                if(prop==null){
+                                    System.out.println("無道具");
+                                    break;
+                                }
+                                System.out.println(prop);
                                 break;
                             }
                             case ITEM_USE: { //調用使用物品方法
-                                player.useProp(player.chooseItem(ITEM_INDEX_ARRAY[ITEM_INDEX]));
+                                if(prop==null){
+                                    System.out.println("無道具");
+                                    break;
+                                }
+                                player.useProp(prop);
                                 break;
                             }
                             case ITEM_EXIT: {
                                 isItemOpen = false;
                                 break;
                             }
+                            default:{
+                                System.out.println("輸入錯誤");
+                            }
                         }
                     }
                     break;
                 }
             }
-            if (player.getHp() < 0) {
+            if (player.getHp() <= 0) {
+                //死了整個世界和世界都重整
                 eventService = new EventService(player);
+                //回到原來的血量
+                player.setHp(preHp);
+                Input.pauseAndContinue();
+                System.out.println("你重生了回到" + eventService.getRpgMap());
                 continue;
             }
             if (eventService.isGamePass()) {

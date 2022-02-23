@@ -28,4 +28,9 @@ public class Forest extends RpgMap {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
     }
+
+    @Override
+    public String toString() {
+        return "森林";
+    }
 }

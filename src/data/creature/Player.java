@@ -35,17 +35,31 @@ public class Player extends Creature {
         accessories = new Prop[DEFAULT_ACCESSORIES_NUM];
     }
 
-    public boolean isReadyToLevelUp() {
-        return this.exp > this.upgradeExp;
-    }
-
+    /**
+     * 增加exp，經驗值到就升級
+     * @param exp 獲得的經驗值
+     */
     public void addExp(int exp) {
-        this.exp += exp;
-        if (isReadyToLevelUp()) {
+        if (isReadyToLevelUp(exp)) {
+            this.exp += exp;
             levelUp();
+        }else {
+            this.exp += exp;
         }
     }
 
+    /**
+     * 是否升級
+     * @param exp 得到的經驗值
+     * @return 是否升級
+     */
+    public boolean isReadyToLevelUp(int exp) {
+        return this.exp +exp > this.upgradeExp;
+    }
+
+    /**
+     * 升級level+1
+     */
     public void levelUp() {
         upgradeExp *= 2;
         hp += 2;
@@ -174,6 +188,9 @@ public class Player extends Creature {
      * @param prop 使用哪個道具
      */
     public void useProp(Prop prop) {
+        if(prop==null){
+            return;
+        }
         this.hp += prop.getHp();
         this.strength += prop.getStrength();
         this.defense += prop.getDefense();
@@ -226,8 +243,9 @@ public class Player extends Creature {
      */
     public void showDetail() {
         System.out.println(name
-                + "\n血量：" + hp
                 + "\n等級：" + level
+                + "\n經驗值：" + exp
+                + "\n血量：" + hp
                 + "\n敏捷：" + agile
                 + "\n力量：" + strength
                 + "\n命中：" + hit

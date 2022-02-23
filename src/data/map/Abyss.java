@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Abyss extends RpgMap {
     public enum Monster{
-        MAGIC_WOLF, WEASEL, GHOST;//, BAHAMUT;
+        MAGIC_WOLF, WEASEL, GHOST, BAHAMUT;
         private static final List<Abyss.Monster> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
@@ -26,5 +26,10 @@ public class Abyss extends RpgMap {
         public static Treasure randomTreasure()  {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "深淵";
     }
 }

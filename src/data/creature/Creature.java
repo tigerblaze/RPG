@@ -29,8 +29,16 @@ public class Creature {
         return hp;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    /**
+     * 若hp小於0，為0
+     * @param newHp 新hp
+     */
+    public void setHp(int newHp) {
+        if(newHp<0){
+            this.hp = 0;
+        }else {
+            this.hp = newHp;
+        }
     }
 
     public int getAgile() {

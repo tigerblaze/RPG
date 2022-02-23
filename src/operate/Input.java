@@ -11,23 +11,22 @@ public class Input {
      */
     public static String getOperateInput() {
         while (true) {
-            try {
                 String input = SCANNER.nextLine();
                 input = input.replace(" ", "");
                 input = input.toLowerCase();
                 if ("go".equals(input) || "status".equals(input) || "supply".equals(input)) {
-                    String clear = SCANNER.nextLine();
                     return input;
+                }else {
+                    System.out.println("輸入錯誤請重新輸入 \"go\",\"status\",\"supply\"");
                 }
-            } catch (Exception e) {
-                System.out.println("輸入錯誤請重新輸入 \"go\",\"status\",\"supply\"");
-                String clear = SCANNER.nextLine();//清除無用字符
-            }
+
         }
     }
 
     /**
      * 道具操作的輸入限制
+     * @param index 傳入一個陣列獲取選擇的道具索引
+     * @return 回傳選項
      */
     public static int getItemActionInput(int[] index) {
         while (true) {
@@ -37,7 +36,7 @@ public class Input {
                 return Main.ITEM_EXIT;
             } else {
                 try {
-                    //取得道具index
+                    //取得使用者輸入的道具選項
                     int parse = Integer.parseInt(input);
                     if (parse > 5 || parse < 1) {
                         return -1;
@@ -46,11 +45,13 @@ public class Input {
                         select = select.replace(" ","");
                         String selectLowerCase = select.toLowerCase();
                         if(selectLowerCase.equals("status")){
-                            index[0] = parse;
+                            index[0] = parse-1; //選項-1為索引值
                             return Main.ITEM_STATUS;
                         }else if(selectLowerCase.equals("use")){
-                            index[0] = parse;
+                            index[0] = parse-1; //選項-1為索引值
                             return Main.ITEM_USE;
+                        }else{
+                            return -1;
                         }
                     }
                 }catch (Exception e){
@@ -91,16 +92,21 @@ public class Input {
      */
     public static String filterBlankString() {
         do {
-
             String input = SCANNER.nextLine();
             while (input.isEmpty()) {
                 System.out.println("請輸入有效選項：");
                 input = SCANNER.nextLine();
             }
-            String clear = SCANNER.nextLine();
             return input;
-
         } while (true);
+    }
+
+    /**
+     * 按下ENTER繼續
+     */
+    public static void pauseAndContinue(){
+        System.out.println("按下enter繼續");
+        SCANNER.nextLine();
     }
 
 }
