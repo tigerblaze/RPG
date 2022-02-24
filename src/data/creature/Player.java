@@ -254,8 +254,8 @@ public class Player extends Creature {
                 + "\n命中：" + hit
                 + "\n防禦：" + defense
                 + "\n負重：" + (weapon.getWeight() + armor.getWeight()) + " / " + this.weight
-                + "\n武器：" + weapon
-                + "\n防具：" + armor
+                + "\n武器：" + (weapon==null? "無":weapon)
+                + "\n防具：" + (armor==null? "無":armor)
         );
     }
 

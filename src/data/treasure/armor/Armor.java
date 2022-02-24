@@ -6,9 +6,9 @@ import data.treasure.weapon.Weapon;
 import java.util.List;
 import java.util.Random;
 
-public class Armor implements Treasure {
+public abstract class Armor implements Treasure {
     public enum initialArmors{
-        WOODENARMOR, CHAINARMOR, PLATEARMOR;
+        WOODEN_ARMOR, CHAIN_ARMOR, PLATE_ARMOR;
         private static final List<initialArmors> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
