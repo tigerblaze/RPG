@@ -4,10 +4,13 @@ import data.treasure.prop.*;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 野豬
  * @date 2022/2/15 下午 03:43
  */
 public class Boar extends Enemy{
+    /**
+     * 原始數值
+     */
     private static final int HP = 6;
     private static final int AGILE = 4;
     private static final int STRENGTH = 5;

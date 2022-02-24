@@ -20,20 +20,18 @@ public class EventService {
     private static final int FOREST_MAP = 0;
     private static final int ABYSS_MAP = 1;
 
+    /**
+     * 哪一個玩家在進行
+     */
     private Player player;
+    /**
+     * 在哪一張地圖執行
+     */
     private RpgMap rpgMap;
     /**
      * 兩個地圖都clear才通關
      */
     private RpgMap[] gamePassMaps;
-
-    public enum Event {
-        NOTHING,
-        MEET_PASSIVE_ENEMY,
-        MEET_ACTIVE_ENEMY,
-        BRANCH,
-        GET_TREASURE
-    }
 
     public EventService(Player player) {
         this.player = player;
@@ -43,6 +41,22 @@ public class EventService {
         this.rpgMap = (RANDOM.nextInt(2) == 0) ? gamePassMaps[FOREST_MAP] : gamePassMaps[ABYSS_MAP];
     }
 
+    /**
+     * 會發生的事件
+     */
+    public enum Event {
+        NOTHING,
+        MEET_PASSIVE_ENEMY,
+        MEET_ACTIVE_ENEMY,
+        BRANCH,
+        GET_TREASURE
+
+    }
+
+    /**
+     * 當玩家向前一步時可能遇到的功能隨機執行一個
+     * @return
+     */
     public Event exeRandomEvent() {
         Event event = Event.NOTHING;
         int eventNum ;
@@ -61,7 +75,7 @@ public class EventService {
                 break;
             case 2:
                 event = Event.MEET_PASSIVE_ENEMY;
-                meetPassiveEnemy();
+                choosePassiveEnemy();
                 break;
             case 3:
                 event = Event.MEET_ACTIVE_ENEMY;
@@ -74,6 +88,8 @@ public class EventService {
             case 5:
                 event = Event.GET_TREASURE;
                 getTreasure();
+                break;
+            default:
                 break;
         }
         this.rpgMap.go();
@@ -114,7 +130,7 @@ public class EventService {
                 select = Input.filterSelection(1, 2);
                 if(select==1) {
                     player.useProp(player.chooseItem(chosenPropIndex - 1));
-                    player.getItems()[chosenPropIndex] = null;
+                    player.getItems()[chosenPropIndex-1] = null;
                 }
 
             } else if (select == 3) {
@@ -266,11 +282,17 @@ public class EventService {
         return escape;
     }
 
-    public void meetPassiveEnemy() {
+    /**
+     * 選擇被動怪
+     */
+    public void choosePassiveEnemy() {
         //just for now cause Stan said that we will not meet any passive enemy
         return;
     }
 
+    /**
+     * 選擇主動怪
+     */
     public void chooseActiveEnemy() {
         String currentMap = this.rpgMap.getClass().getSimpleName();
         Enemy nextEnemy = null;
@@ -335,6 +357,9 @@ public class EventService {
         }
     }
 
+    /**
+     * 遇到岔路時選擇要走的方向
+     */
     public void branch() {
         System.out.println("遇到岔路，你要往哪邊走呢？\n1.左邊 2.右邊 3.不走了回家");
         int input = Input.filterSelection(1, 3);
@@ -346,6 +371,9 @@ public class EventService {
         this.exeRandomEvent(); //再執行一次
     }
 
+    /**
+     * 遇到寶箱
+     */
     public void getTreasure() {
         String currentMap = this.rpgMap.getClass().getSimpleName();
         Treasure treasure = null;
@@ -414,6 +442,10 @@ public class EventService {
         }
     }
 
+    /**
+     * 取得目前地圖
+     * @return 目前地圖
+     */
     public RpgMap getRpgMap() {
         return rpgMap;
     }

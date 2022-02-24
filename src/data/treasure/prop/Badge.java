@@ -5,7 +5,7 @@ import java.util.Random;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 徽章
  * @date 2022/2/23 下午 03:21
  */
 public abstract class Badge extends Prop{

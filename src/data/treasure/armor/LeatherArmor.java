@@ -1,5 +1,8 @@
 package data.treasure.armor;
 
+/**
+ * 防具-皮甲
+ */
 public class LeatherArmor extends Armor {
     public LeatherArmor() {
         this.setDefense(2);

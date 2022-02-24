@@ -4,40 +4,49 @@ import data.treasure.Treasure;
 import java.util.List;
 import java.util.Random;
 
-public class Armor implements Treasure {
+/**
+ * 防具
+ */
+public abstract class Armor implements Treasure {
     private int weight;
     private int defense;
     private String name;
+    /**
+     * 是否為初始防具
+     */
     private boolean isInitialWeapon;
 
-    public Armor() {
-    }
-
+    /**
+     * 回傳初始防具的所有資訊
+     * @return 
+     */
     public static String getInitialArmorInfo() {
         Armor[] initialArmors = new Armor[]{new WoodenArmor(), new ChainArmor(), new PlateArmor()};
-        StringBuilder sb = new StringBuilder();
-        int i = 1;
-        sb.append("-----------------------\n");
-        Armor[] var3 = initialArmors;
-        int var4 = initialArmors.length;
-
-        for(int var5 = 0; var5 < var4; ++var5) {
-            Armor armor = var3[var5];
-            int var10001 = i++;
-            sb.append(var10001 + ". ");
-            sb.append(armor);
-            sb.append(" " + armor.getDetail());
-            sb.append("\n");
+        StringBuilder armorDescription = new StringBuilder();
+        int count = 1;
+        armorDescription.append("-----------------------\n");
+        for(Armor armor:initialArmors) {
+            armorDescription.append(count++ + ". ");
+            armorDescription.append(armor);
+            armorDescription.append(" " + armor.getDetail());
+            armorDescription.append("\n");
         }
-
-        sb.append("-----------------------");
-        return sb.toString();
+        armorDescription.append("-----------------------");
+        return armorDescription.toString();
     }
 
+    /**
+     * 回傳防具重量
+     * @return 防具重量
+     */
     public int getWeight() {
         return this.weight;
     }
 
+    /**
+     * 設定防具重量
+     * @param weight 防具重量
+     */
     public void setWeight(int weight) {
         this.weight = weight;
     }
@@ -50,10 +59,18 @@ public class Armor implements Treasure {
         this.defense = defense;
     }
 
+    /**
+     * 設置防具名稱
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 將屬性設置成初始防具
+     * @param isInitialWeapon 
+     */
     public void setIsInitialWeapon(boolean isInitialWeapon) {
         this.isInitialWeapon = isInitialWeapon;
     }
@@ -62,24 +79,12 @@ public class Armor implements Treasure {
         return this.name;
     }
 
+    /**
+     * 回傳防具細部資料
+     * * @return
+     */
     public String getDetail() {
         return "重量: " + this.weight + ", 防禦:" + this.defense;
     }
 
-    public static enum initialArmors {
-        WOODEN_ARMOR,
-        CHAIN_ARMOR,
-        PLATE_ARMOR;
-
-        private static final List<Armor.initialArmors> VALUES = List.of(values());
-        private static final int SIZE = VALUES.size();
-        private static final Random RANDOM = new Random();
-
-        private initialArmors() {
-        }
-
-        public static Armor.initialArmors randomTreasure() {
-            return (Armor.initialArmors)VALUES.get(RANDOM.nextInt(SIZE));
-        }
-    }
 }

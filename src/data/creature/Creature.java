@@ -2,7 +2,7 @@ package data.creature;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 生物類，生物的基本屬性
  * @date 2022/2/14 下午 12:21
  */
 public class Creature {
@@ -41,14 +41,26 @@ public class Creature {
         }
     }
 
+    /**
+     * 回傳敏捷
+     * @return
+     */
     public int getAgile() {
         return agile;
     }
 
+    /**
+     * 設置敏捷
+     * @param agile
+     */
     public void setAgile(int agile) {
         this.agile = agile;
     }
 
+    /**
+     *回傳力量
+     * * @return
+     */
     public int getStrength() {
         return strength;
     }
@@ -88,9 +100,4 @@ public class Creature {
     public void setExp(int exp) {
         this.exp = exp;
     }
-
-    public boolean isDead(){
-        return this.hp<=0;
-    }
-
 }

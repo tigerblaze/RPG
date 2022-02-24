@@ -1,7 +1,9 @@
 package data.treasure.prop;
 
 /**
- * 動物屠殺者徽章，編號Time：-2
+ * 動物屠殺者徽章，編號Time：-2此編號是決定它存在徽章欄位的index計算方式是 times * (-1)-1
+ * 所以這個會存在accessories[0];
+ *
  */
 public class AnimalSlaughterBadge extends Badge{
     public AnimalSlaughterBadge(){

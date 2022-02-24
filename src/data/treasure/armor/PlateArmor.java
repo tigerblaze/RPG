@@ -1,5 +1,8 @@
 package data.treasure.armor;
 
+/**
+ * 防具-板甲
+ */
 public class PlateArmor extends Armor {
     public PlateArmor() {
         this.setDefense(4);

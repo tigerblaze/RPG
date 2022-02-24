@@ -4,9 +4,13 @@ import data.treasure.Treasure;
 import data.treasure.weapon.*;
 import data.treasure.armor.*;
 import data.treasure.prop.*;
+import operate.Input;
 
 import java.util.ArrayList;
 
+/**
+ * 玩家
+ */
 public class Player extends Creature {
     private String name;
     private Weapon weapon = null;
@@ -29,7 +33,7 @@ public class Player extends Creature {
         super(5, 5, 5, 5, 5, 1, 0);
         this.name = name;
         this.upgradeExp = 10;
-        items = new Prop[5];
+        this.items = new Prop[5];
         this.maxWeight = strength * 6;
         this.currWeight = 0;
         buffs = new ArrayList<>();
@@ -93,18 +97,14 @@ public class Player extends Creature {
         return maxWeight;
     }
 
-    public int getUpgradeExp() {
-        return upgradeExp;
-    }
-
-    public boolean isBattling() {
-        return isBattling;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 丟棄原有的武器(如果原本有的話)並穿上新武器
+     * @param weapon
+     */
     public void setWeapon(Weapon weapon) {
         int currArmorWeight = (this.armor == null) ? 0 : this.armor.getWeight();
         if (this.maxWeight - currArmorWeight - weapon.getWeight() < 0) {
@@ -119,6 +119,10 @@ public class Player extends Creature {
 
     }
 
+    /**
+     * 丟棄原有的防具(如果原本有的話)並穿上新防具
+     * @param armor
+     */
     public void setArmor(Armor armor) {
         int currWeaponWeight = (this.weapon == null) ? 0 : this.weapon.getWeight();
         if (this.maxWeight - currWeaponWeight - armor.getWeight() < 0) {
@@ -132,10 +136,10 @@ public class Player extends Creature {
         }
     }
 
-    public void setItems(Prop[] items) {
-        this.items = items;
-    }
-
+    /**
+     * 檢查玩家是否可已經無法再撿新的道具
+     * @return
+     */
     public boolean isItemsFull() {
         return (this.items.length == this.numOfItems);
     }
@@ -161,7 +165,8 @@ public class Player extends Creature {
     }
 
     /**
-     * @param treasure
+     * 當玩家拿到寶物時依找寶物種類協助玩家更換原有的或放入道具欄
+     * ram treasure
      */
     public void getTreasure(Treasure treasure) {
         String treasureType = treasure.getClass().getSimpleName();
@@ -228,8 +233,6 @@ public class Player extends Creature {
         if (times > 0) {
             //buff繼續，效果還沒消失
             prop.setTimes(times - 1);
-        } else if (prop.getTimes() == 0) { //buff效果結束
-            useProp(prop); //使用反向道具
         }
         return prop.getTimes();
     }
@@ -240,12 +243,16 @@ public class Player extends Creature {
     public void buffArrayRun() {
         for (int i = 0; i < buffs.size(); i++) {
             if (this.buffRun(buffs.get(i)) == 0) {
+                useProp(buffs.get(i));
                 buffs.remove(i); //buff效果結束，從buff欄移除
                 i--;
             }
         }
     }
 
+    /**
+     * 徽章種類
+     */
     private static final int MONSTER_TYPE_BADGE = 0;
     private static final int ANIMAL_TYPE_BADGE = 1;
 

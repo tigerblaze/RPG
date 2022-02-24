@@ -5,10 +5,13 @@ import java.util.Random;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 地圖-森林
  * @date 2022/2/18 下午 08:33
  */
 public class Forest extends RpgMap {
+    /**
+     * 會生成的敵人種類
+     */
     public enum Animal{
         WOLF, LION, BOAR, ELEPHANT;
         private static final List<Animal> VALUES = List.of(values());
@@ -19,6 +22,9 @@ public class Forest extends RpgMap {
         }
     }
 
+    /**
+     * 會掉落的調落物種類
+     */
     public enum Treasure{
         HEALING_LOTION, STRENGTH_ENHANCE_LOTION, ARROW;
         private static final List<Treasure> VALUES = List.of(values());

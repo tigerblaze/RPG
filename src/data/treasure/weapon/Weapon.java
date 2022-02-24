@@ -8,9 +8,10 @@ public abstract class Weapon implements Treasure {
     private String name;
     public boolean isInitialWeapon;
 
-    public Weapon() {
-    }
-
+    /**
+     * 初始化武器
+     * @return
+     */
     public static String getInitialWeaponInfo() {
         Weapon[] initialWeapons = new Weapon[]{new Sword(), new Ax(), new Staff()};
         StringBuilder sb = new StringBuilder();

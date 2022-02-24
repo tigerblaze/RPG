@@ -5,10 +5,13 @@ import java.util.Random;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 地圖-深淵
  * @date 2022/2/18 下午 08:34
  */
 public class Abyss extends RpgMap {
+    /**
+     * 會生成的敵人種類
+     */
     public enum Monster{
         MAGIC_WOLF, WEASEL, GHOST, BAHAMUT;
         private static final List<Abyss.Monster> VALUES = List.of(values());
@@ -18,6 +21,10 @@ public class Abyss extends RpgMap {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
     }
+
+    /**
+     * 會掉落的調落物種類
+     */
     public enum Treasure{
         LEATHER_ARMOR, STRENGTH_ENHANCE_LOTION, HEALING_LOTION;
         private static final List<Treasure> VALUES = List.of(values());

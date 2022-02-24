@@ -1,5 +1,8 @@
 package data.treasure.armor;
 
+/**
+ * 防具-鎖子甲
+ */
 public class ChainArmor extends Armor {
     public ChainArmor() {
         this.setDefense(1);

@@ -4,10 +4,13 @@ import data.treasure.prop.*;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 狼
  * @date 2022/2/15 下午 03:43
  */
 public class Wolf extends Enemy{
+    /**
+     * 原始數值
+     */
     private static final int HP = 5;
     private static final int AGILE = 6;
     private static final int STRENGTH = 6;

@@ -2,6 +2,9 @@ package data.treasure.prop;
 
 import data.treasure.Treasure;
 
+/**
+ * 掉落物
+ */
 public class Prop implements Treasure {
        private int price;
        private int hp;
@@ -111,6 +114,11 @@ public class Prop implements Treasure {
        public Prop() {
        }
 
+       /**
+        * 因為這個道具是buff類型 有限定的條件下才會有效果
+        * 創建一個效果反向的道具 回合到了把他當道具吃掉來互相抵銷效果所以要給他一個消失的方法
+        * @param buffCancel
+        */
        public Prop(Prop buffCancel) {
               buffCancel.setHp(-buffCancel.getHp());
               buffCancel.setStrength(-buffCancel.getStrength());
@@ -121,6 +129,11 @@ public class Prop implements Treasure {
               buffCancel.setTimes(buffCancel.getTimes() - 1);
        }
 
+       /**
+        * 一個物件 可以設定times目前只有設計給取消buff用
+        * @param buffCancel
+        * @param times 幾回合後消失
+        */
        public Prop(Prop buffCancel, int times) {
               buffCancel.setHp(-buffCancel.getHp());
               buffCancel.setStrength(-buffCancel.getStrength());

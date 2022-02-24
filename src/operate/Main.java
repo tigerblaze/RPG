@@ -55,7 +55,7 @@ public class Main {
         /**
          * 死亡復活後要回到死亡前的hp
          */
-        int preHp;
+        int preHp;//血量紀錄
         while (player.getWeapon() == null || player.getArmor() == null) {
             System.out.println("你的負重上限：" +  player.getMaxWeight());
             System.out.println("請選擇武器");
@@ -73,6 +73,9 @@ public class Main {
                     player.setWeapon(new Staff());
                     break;
                 }
+                default:{
+                    break;
+                }
             }
             System.out.println("請選擇防具");
             System.out.println(Armor.getInitialArmorInfo());
@@ -87,6 +90,9 @@ public class Main {
                 }
                 case PLATE_ARMOR: {
                     player.setArmor(new PlateArmor());
+                    break;
+                }
+                default: {
                     break;
                 }
             }
@@ -124,6 +130,7 @@ public class Main {
                     break;
                 }
                 case STATUS: {
+                    //顯示狀態
                     player.showDetail();
                     break;
                 }
@@ -156,7 +163,6 @@ public class Main {
                                 player.useProp(prop);
                                 //getTime為0，代表是一次性道具，使用就移除
                                 player.getItems()[itemIndex] = null;
-
                                 break;
                             }
                             case ITEM_EXIT: {
@@ -165,6 +171,7 @@ public class Main {
                             }
                             default: {
                                 System.out.println("輸入錯誤");
+                                break;
                             }
                         }
                     }

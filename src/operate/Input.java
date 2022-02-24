@@ -3,6 +3,9 @@ package operate;
 import java.util.Locale;
 import java.util.Scanner;
 
+/**
+ * 使用者輸入控制
+ */
 public class Input {
     private static final Scanner SCANNER = new Scanner(System.in);
 
