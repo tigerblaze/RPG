@@ -208,14 +208,10 @@ public class EventService {
         boolean hit = false;
         if (rate < 0) {
             hit = true;
-        } else if (rate > 1) {
-            hit = false;
         } else {
             double num = Math.random();
             if (num < rate) {
                 hit = true;
-            } else if (num >= rate) {
-                hit = false;
             }
         }
         return hit;
