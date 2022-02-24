@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class HealingLotion extends Prop{/*治療藥水*/
+
+/**
+ * 治療藥水
+ */
+public class HealingLotion extends Prop{
     public HealingLotion(){
         setPrice(3);
         setHp(3);
@@ -11,5 +15,6 @@ public class HealingLotion extends Prop{/*治療藥水*/
         setTimes(0);
         setIsBuff(false);
         setBuffRounds(0);
+        setName("治療藥水");
     }
 }

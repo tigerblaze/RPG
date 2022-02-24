@@ -2,15 +2,9 @@ package data.treasure.weapon;
 
 public class Ax extends Weapon {
     public Ax() {
-        this( 15, 4);
-    }
-
-    public Ax(int weight, int attack) {
-        super(weight, attack);
-    }
-
-    @Override
-    public String toString() {
-        return "斧頭";
+        this.setAttack(4);
+        this.setWeight(15);
+        this.setName("斧頭");
+        this.setIsInitialWeapon(true);
     }
 }

@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class Pork extends Prop{/*豬肉*/
+
+/**
+ * 豬肉
+ */
+public class Pork extends Prop{
     public Pork(){
         setPrice(2);
         setHp(2);
@@ -10,5 +14,6 @@ public class Pork extends Prop{/*豬肉*/
         setUsage("回復2滴血量、-1防禦");
         setIsBuff(false);
         setBuffRounds(0);
+        setName("豬肉");
     }
 }

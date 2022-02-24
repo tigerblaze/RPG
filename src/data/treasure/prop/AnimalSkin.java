@@ -1,6 +1,9 @@
 package data.treasure.prop;
 
-public class AnimalSkin extends Prop{/*動物皮*/
+/**
+ * 動物皮
+ */
+public class AnimalSkin extends Prop{
     public AnimalSkin(){
         setPrice(1);
         setHp(0);
@@ -11,6 +14,6 @@ public class AnimalSkin extends Prop{/*動物皮*/
         setUsage("");
         setIsBuff(false);
         setBuffRounds(0);
-        //hi
+        setName("動物皮");
     }
 }

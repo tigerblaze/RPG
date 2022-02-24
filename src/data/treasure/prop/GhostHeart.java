@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class GhostHeart extends Prop{/*幽魂之心*/
+
+/**
+ * 幽魂之心
+ */
+public class GhostHeart extends Prop{
     public GhostHeart(){
         setPrice(1);
         setHp(0);
@@ -10,5 +14,6 @@ public class GhostHeart extends Prop{/*幽魂之心*/
         setUsage("");
         setIsBuff(false);
         setBuffRounds(0);
+        setName("幽魂之心");
     }
 }

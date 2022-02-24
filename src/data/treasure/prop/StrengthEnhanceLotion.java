@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class StrengthEnhanceLotion extends Prop{/*力量增強藥水*/
+
+/**
+ * 力量增強藥水
+ */
+public class StrengthEnhanceLotion extends Prop{
     public StrengthEnhanceLotion(){
         setPrice(2);
         setHp(0);
@@ -11,5 +15,6 @@ public class StrengthEnhanceLotion extends Prop{/*力量增強藥水*/
         setTimes(2);
         setIsBuff(true);
         setBuffRounds(2);
+        setName("力量增強藥水");
     }
 }

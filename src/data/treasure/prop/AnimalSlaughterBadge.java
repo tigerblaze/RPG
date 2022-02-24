@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class AnimalSlaughterBadge extends Badge{/*動物屠殺者徽章*/
+
+/**
+ * 動物屠殺者徽章
+ */
+public class AnimalSlaughterBadge extends Badge{
     public AnimalSlaughterBadge(){
         setPrice(4);
         setHp(0);
@@ -11,5 +15,6 @@ public class AnimalSlaughterBadge extends Badge{/*動物屠殺者徽章*/
         setTimes(-1);
         setIsBuff(false);
         setBuffRounds(0);
+        setName("動物屠殺者徽章");
     }
 }

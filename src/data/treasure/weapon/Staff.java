@@ -1,17 +1,11 @@
 package data.treasure.weapon;
 
-public class Staff extends Weapon{
+public class Staff extends Weapon {
     public Staff() {
-        this( 7, -2);
-    }
-
-    public Staff(int weight, int attack) {
-        super(weight, attack);
-    }
-
-    @Override
-    public String toString() {
-        return "法杖";
+        this.setAttack(-2);
+        this.setWeight(7);
+        this.setName("法杖");
+        this.setIsInitialWeapon(true);
     }
 }
 

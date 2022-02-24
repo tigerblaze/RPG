@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class LionClaw extends Prop{/*獅爪*/
+
+/**
+ * 獅爪
+ */
+public class LionClaw extends Prop{
     public LionClaw(){
         setPrice(1);
         setHp(0);
@@ -10,5 +14,6 @@ public class LionClaw extends Prop{/*獅爪*/
         setUsage("");
         setIsBuff(false);
         setBuffRounds(0);
+        setName("獅爪");
     }
 }

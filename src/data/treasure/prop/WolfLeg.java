@@ -1,5 +1,9 @@
 package data.treasure.prop;
-public class WolfLeg extends Prop{/*狼腿*/
+
+/**
+ * 狼腿
+ */
+public class WolfLeg extends Prop{
     public WolfLeg(){
         setPrice(1);
         setHp(0);
@@ -10,5 +14,6 @@ public class WolfLeg extends Prop{/*狼腿*/
         setUsage("");
         setIsBuff(false);
         setBuffRounds(0);
+        setName("狼腿");
     }
 }

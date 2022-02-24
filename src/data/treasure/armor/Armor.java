@@ -1,45 +1,40 @@
 package data.treasure.armor;
 
 import data.treasure.Treasure;
-import data.treasure.weapon.Weapon;
-
 import java.util.List;
 import java.util.Random;
 
-public abstract class Armor implements Treasure {
-    public enum initialArmors{
-        WOODEN_ARMOR, CHAIN_ARMOR, PLATE_ARMOR;
-        private static final List<initialArmors> VALUES = List.of(values());
-        private static final int SIZE = VALUES.size();
-        private static final Random RANDOM = new Random();
-        public static initialArmors randomTreasure()  {
-            return VALUES.get(RANDOM.nextInt(SIZE));
-        }
-    }
+public class Armor implements Treasure {
     private int weight;
     private int defense;
+    private String name;
+    private boolean isInitialWeapon;
 
-    public static String getInitialArmorInfo(){
-        Armor[] initialArmors = {new WoodenArmor(), new ChainArmor(), new PlateArmor()};
+    public Armor() {
+    }
+
+    public static String getInitialArmorInfo() {
+        Armor[] initialArmors = new Armor[]{new WoodenArmor(), new ChainArmor(), new PlateArmor()};
         StringBuilder sb = new StringBuilder();
-        int i=1;
+        int i = 1;
         sb.append("-----------------------\n");
-        for(Armor armor:initialArmors){
-            sb.append(i++ + ". ");
+        Armor[] var3 = initialArmors;
+        int var4 = initialArmors.length;
+
+        for(int var5 = 0; var5 < var4; ++var5) {
+            Armor armor = var3[var5];
+            int var10001 = i++;
+            sb.append(var10001 + ". ");
             sb.append(armor);
             sb.append("\n");
         }
+
         sb.append("-----------------------");
         return sb.toString();
     }
 
-    public Armor(int weight, int defense) {
-        this.weight = weight;
-        this.defense = defense;
-    }
-
     public int getWeight() {
-        return weight;
+        return this.weight;
     }
 
     public void setWeight(int weight) {
@@ -47,16 +42,44 @@ public abstract class Armor implements Treasure {
     }
 
     public int getDefense() {
-        return defense;
+        return this.defense;
     }
 
     public void setDefense(int defense) {
         this.defense = defense;
     }
 
-    @Override
-    public String toString(){
-        return this.getClass().getSimpleName() + " Weight: "+ weight + ", Defense:" + defense;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIsInitialWeapon(boolean isInitialWeapon) {
+        this.isInitialWeapon = isInitialWeapon;
+    }
+
+    public String toString() {
+        return this.name;
+    }
+
+    public String getDetail() {
+        String var10000 = this.getClass().getSimpleName();
+        return var10000 + " Weight: " + this.weight + ", Defense:" + this.defense;
+    }
+
+    public static enum initialArmors {
+        WOODEN_ARMOR,
+        CHAIN_ARMOR,
+        PLATE_ARMOR;
+
+        private static final List<Armor.initialArmors> VALUES = List.of(values());
+        private static final int SIZE = VALUES.size();
+        private static final Random RANDOM = new Random();
+
+        private initialArmors() {
+        }
+
+        public static Armor.initialArmors randomTreasure() {
+            return (Armor.initialArmors)VALUES.get(RANDOM.nextInt(SIZE));
+        }
     }
 }
-

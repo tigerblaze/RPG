@@ -2,16 +2,9 @@ package data.treasure.armor;
 
 public class ChainArmor extends Armor {
     public ChainArmor() {
-        this( 15, 2);
-    }
-
-    public ChainArmor(int weight, int defense) {
-        super(weight, defense);
-    }
-
-    @Override
-    public String toString() {
-        return "鎖子甲";
+        this.setDefense(1);
+        this.setWeight(15);
+        this.setName("鎖子甲");
+        this.setIsInitialWeapon(true);
     }
 }
-
