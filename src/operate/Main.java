@@ -1,10 +1,14 @@
 package operate;
 
 import data.creature.*;
+import data.map.Forest;
 import data.treasure.armor.*;
 import data.treasure.prop.Prop;
 import data.treasure.weapon.*;
 
+/**
+ * 主介面控制+輸出文字
+ */
 public class Main {
     /**
      * 操作輸入
@@ -43,9 +47,11 @@ public class Main {
 
 
     public static void main(String[] args) {
-        System.out.println("請輸入角色名稱");
+        System.out.println("你莫名其妙就被選為勇者了\n村莊附近的森林中，有一隻大象在迫害村民。\n而且離村子不遠的深淵中，" +
+                "魔王巴哈姆特隨時會毀滅這個村莊！\n請勇者拯救我們吧！請問你的名字是？");
         String name = Input.filterBlankString();
         Player player = new Player(name);
+        System.out.printf("%s你好\n" , player.getName());
         /**
          * 死亡復活後要回到死亡前的hp
          */
@@ -83,9 +89,17 @@ public class Main {
                 break;
             }
         }
+        System.out.printf("我會將%s傳送到森林，加油啊勇者！別死囉！\n",player.getName());
+        Input.pauseAndContinue();
+
         //新建對象(操作,環境)，控制觸發事件
         EventService eventService = new EventService(player);
         System.out.println("你來到了" + eventService.getRpgMap());
+        if(eventService.getRpgMap() instanceof Forest){
+            System.out.println("打敗大象後，記得去打巴哈姆特喔，加油");
+        }else {
+            System.out.println("你到深淵去了嗎！？那就先打巴哈姆特，再打大象吧");
+        }
         Input.pauseAndContinue();
 
         boolean isGameOver = false;
@@ -158,6 +172,7 @@ public class Main {
                 continue;
             }
             if (eventService.isGamePass()) {
+                System.out.printf("*****\\\\%s打敗了大象和巴哈姆特，村民很感謝你，謝謝勇者，再見了勇者//*****\n",player.getName());
                 isGameOver = true;
             }
             System.out.println("===============================================================================");

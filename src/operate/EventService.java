@@ -11,7 +11,9 @@ import data.treasure.armor.LeatherArmor;
 import data.treasure.prop.HealingLotion;
 import data.treasure.prop.StrengthEnhanceLotion;
 
-
+/**
+ * 事件控制+事件文字輸出
+ */
 public class EventService {
     private static final Random RANDOM = new Random();
     private static final int FOREST_MAP = 0;
@@ -157,9 +159,9 @@ public class EventService {
         if(isHit(attack,defence)){
             System.out.println(attack + " 使出攻擊");
             int hurt = attackAtk-defence.getDefense();
-            System.out.println(attack + "造成" + hurt + "傷害");
             //傷害計算
             hurt = Math.max(0,hurt); //傷害為負的不扣血
+            System.out.println(attack + "造成" + hurt + "傷害");
             defence.setHp(defence.getHp()-hurt);//更新守方血量
             System.out.println(defence + "的hp剩下" + defence.getHp());
             System.out.println(attack + "的hp剩下" + attack.getHp());
@@ -180,8 +182,12 @@ public class EventService {
                     Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
                     player.getTreasure(prop);
                     System.out.println("獲得" + prop);
-                    //打贏boss去下一張圖
+                    //打贏boss去下一張圖，或通關
                     if(enemy.getType()==EnemyType.ANIMAL_BOSS || enemy.getType()==EnemyType.MONSTER_BOSS){
+                        rpgMap.setBossAlive(false) ;
+                        if(isGamePass()){
+                            return;
+                        }
                         clearChangeMap();
                         System.out.println("你打贏了boss來到了" + this.rpgMap);
                     }
@@ -313,12 +319,12 @@ public class EventService {
     public void branch() {
         System.out.println("遇到岔路，你要往哪邊走呢？\n1.左邊 2.右邊 3.不走了回家");
         int input = Input.filterSelection(1, 3);
-        this.rpgMap.go();
-        this.exeRandomEvent(); //再執行一次
         if (input==3) {
             System.out.println("回家吧！掰掰！");
             System.exit(0);//好玩用的
         }
+        this.rpgMap.go();
+        this.exeRandomEvent(); //再執行一次
     }
 
     public void getTreasure() {

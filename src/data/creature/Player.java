@@ -37,30 +37,33 @@ public class Player extends Creature {
 
     /**
      * 增加exp，經驗值到就升級
+     *
      * @param exp 獲得的經驗值
      */
     public void addExp(int exp) {
         if (isReadyToLevelUp(exp)) {
             this.exp += exp;
             levelUp();
-        }else {
+        } else {
             this.exp += exp;
         }
     }
 
     /**
      * 是否升級
+     *
      * @param exp 得到的經驗值
      * @return 是否升級
      */
     public boolean isReadyToLevelUp(int exp) {
-        return this.exp +exp > this.upgradeExp;
+        return this.exp + exp >= this.upgradeExp;
     }
 
     /**
      * 升級level+1
      */
     public void levelUp() {
+        level++;
         upgradeExp *= 2;
         hp += 2;
         agile += 2;
@@ -102,7 +105,7 @@ public class Player extends Creature {
     }
 
     public void setWeapon(Weapon weapon) {
-        int armorWeight = (this.armor==null) ? 0 : this.armor.getWeight();
+        int armorWeight = (this.armor == null) ? 0 : this.armor.getWeight();
         if (this.weapon != null) {
             if (this.weight - armorWeight - weapon.getWeight() < 0) {
                 System.out.println("無法更換武器! 若換至新武器，您的負重將會超出上限!");
@@ -116,7 +119,7 @@ public class Player extends Creature {
     }
 
     public void setArmor(Armor armor) {
-        int weaponWeight = (this.weapon==null) ? 0 : this.weapon.getWeight();
+        int weaponWeight = (this.weapon == null) ? 0 : this.weapon.getWeight();
         if (this.armor != null) {
             if (this.weight - weaponWeight - armor.getWeight() < 0) {
                 System.out.println("無法更換防具! 若換至新防具，您的負重將會超出上限!");
@@ -188,7 +191,7 @@ public class Player extends Creature {
      * @param prop 使用哪個道具
      */
     public void useProp(Prop prop) {
-        if(prop==null){
+        if (prop == null) {
             return;
         }
         this.hp += prop.getHp();
@@ -244,7 +247,7 @@ public class Player extends Creature {
     public void showDetail() {
         System.out.println(name
                 + "\n等級：" + level
-                + "\n經驗值：" + exp
+                + "\n經驗值：" + exp + " / " + upgradeExp
                 + "\n血量：" + hp
                 + "\n敏捷：" + agile
                 + "\n力量：" + strength
@@ -259,11 +262,11 @@ public class Player extends Creature {
     /**
      * 顯示道具欄
      */
-    public void showItems(){
+    public void showItems() {
         for (int i = 0; i < items.length; i++) {
-            if(items[i]!=null) {
+            if (items[i] != null) {
                 System.out.println((i + 1) + "." + items[i]);
-            }else {
+            } else {
                 System.out.println((i + 1) + ".");
             }
         }
@@ -272,15 +275,15 @@ public class Player extends Creature {
 
     /**
      * 選擇道具
+     *
      * @param index 道具欄索引
      * @return 選到的道具
      */
-    public Prop chooseItem(int index){
-        Prop result =items[index];
+    public Prop chooseItem(int index) {
+        Prop result = items[index];
         this.getItems()[index] = null;
         return result;
     }
-
 
 
 }
