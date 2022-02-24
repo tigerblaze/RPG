@@ -33,6 +33,7 @@ public class Input {
             String input = SCANNER.next();
             input = input.toLowerCase(Locale.ROOT);
             if (input.equals("exit")) {
+                String clear = SCANNER.nextLine();
                 return Main.ITEM_EXIT;
             } else {
                 try {

@@ -368,7 +368,7 @@ public class EventService {
             System.out.println("Error in getTreasure()! treasure is null!");
         } else {
             this.player.getTreasure(treasure);
-            System.out.println("有寶箱獲得" + treasure);
+            System.out.println("有寶箱！獲得" + treasure);
         }
     }
 

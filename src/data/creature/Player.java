@@ -160,6 +160,10 @@ public class Player extends Creature {
         isBattling = battling;
     }
 
+    /**
+     *
+     * @param treasure
+     */
     public void getTreasure(Treasure treasure) {
         String treasureType = treasure.getClass().getSimpleName();
         Weapon weapon = null;
@@ -173,6 +177,12 @@ public class Player extends Creature {
             setArmor(armor);
         } else if (treasure instanceof Prop) {
             prop = (Prop) treasure;
+            for(int i = 0; i < 5; i++) {
+                if (this.items[i] == null){
+                    this.items[i] = prop;
+                    break;
+                }
+            }
         } else {
             System.out.println("Error in Player.getTreasure()! treasure is neither weapon, armor nor prop!");
         }
