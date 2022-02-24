@@ -85,7 +85,7 @@ public class Main {
         }
         //新建對象(操作,環境)，控制觸發事件
         EventService eventService = new EventService(player);
-        System.out.println("你來到到了" + eventService.getRpgMap());
+        System.out.println("你來到了" + eventService.getRpgMap());
         Input.pauseAndContinue();
 
         boolean isGameOver = false;
@@ -154,7 +154,6 @@ public class Main {
                 eventService = new EventService(player);
                 //回到原來的血量
                 player.setHp(preHp);
-                Input.pauseAndContinue();
                 System.out.println("你重生了回到" + eventService.getRpgMap());
                 continue;
             }

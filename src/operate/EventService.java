@@ -119,105 +119,76 @@ public class EventService {
      * @param second 後攻
      */
     private void attack(Creature first, Creature second) {
-        boolean keepBattle = true;
-        int firstHp = first.getHp();
-        int secondHp = second.getHp();
-        int firstAtt = 0;
-        int secondAtt = 0;
-
-        if (first instanceof Player) {
-            keepBattle = ((Player) first).isBattling();
-            firstAtt = first.getStrength() + ((Player) first).getWeapon().getAttack();
-            secondAtt = second.getStrength();
-        } else if (second instanceof Player) {
-            keepBattle = ((Player) second).isBattling();
-            secondAtt = second.getStrength() + ((Player) second).getWeapon().getAttack();
-            firstAtt = first.getStrength();
-        }
-
         //戰鬥開始
-        int hurt = 0;
-        while (keepBattle && firstHp > 0 && secondHp > 0) {
-            if (isHit(first, second)) {
-                System.out.println(first + "使出攻擊");
-                hurt = firstAtt - second.getDefense();
-                System.out.println(first + "造成" + hurt + "傷害");
-                //傷害
-                hurt = Math.max(hurt, 0);
-                second.setHp(secondHp - hurt);
-                secondHp -= hurt;
-                System.out.println(second + "的hp剩下" + second.getHp());
-                System.out.println(first + "的hp剩下" + first.getHp());
-
-                if (secondHp <= 0) {
-                    if (second instanceof Enemy) {
-                        Enemy enemy = (Enemy) second;
-                        //得到經驗值
-                        if(this.player.isReadyToLevelUp(enemy.getExp())){
-                            System.out.println("升級！");
-                        }
-                        this.player.addExp(enemy.getExp());
-                        System.out.println("獲得經驗值+" + enemy.getExp());
-                        //獲得寶藏
-                        Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
-                        player.getTreasure(prop);
-                        System.out.println("獲得" + prop);
-                        if(enemy.getType()==EnemyType.ANIMAL_BOSS || enemy.getType()==EnemyType.MONSTER_BOSS){
-                            clearChangeMap();
-                            System.out.println("你打贏了boss來到了" + this.rpgMap);
-                        }
-                    }
-                    System.out.println(second + "死了");
-                    player.buffArrayRun();
-                    break;
-                }
-            } else {
-                System.out.println(first + "使出攻擊但沒打到");
-            }
-
+        while (first.getHp() > 0 && second.getHp() > 0) {
+            attackAction(first,second);
+            //先攻方攻擊
             Input.pauseAndContinue();
             System.out.println();
 
-            if (isHit(second, first)) {
-                System.out.println(second + "使出攻擊");
-                hurt = secondAtt - first.getDefense();
-                System.out.println(second + "造成" + hurt + "傷害");
-                //傷害
-                hurt = Math.max(hurt, 0);
-                first.setHp(firstHp - hurt);
-                firstHp -=hurt ;
-                System.out.println(first + "的hp剩下" + first.getHp());
-                System.out.println(second + "的hp剩下" + second.getHp());
-
-                if (firstHp <= 0) {
-                    if (first instanceof Enemy) {
-                        Enemy enemy = (Enemy) first;
-                        //得到經驗值
-                        if(this.player.isReadyToLevelUp(enemy.getExp())){
-                            System.out.println("升級！");
-                        }
-                        this.player.addExp(enemy.getExp());
-                        System.out.println("獲得經驗值+" + enemy.getExp());
-                        //獲得寶藏
-                        Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
-                        player.getTreasure(prop);
-                        System.out.println("獲得" + prop);
-                        if(enemy.getType()==EnemyType.ANIMAL_BOSS || enemy.getType()==EnemyType.MONSTER_BOSS){
-                            clearChangeMap();
-                            System.out.println("你打贏了boss來到了" + this.rpgMap);
-                        }
-                    } else {
-                        System.out.println(first + "死了");
-                    }
-                    player.buffArrayRun();
-                    break;
-                }
-            } else {
-                System.out.println(second + "使出攻擊但沒打到");
+            if(first.getHp() <= 0 || second.getHp() <= 0){
+                break;
             }
+            //後攻方攻擊
+            attackAction(second,first);
             player.buffArrayRun();
 
             Input.pauseAndContinue();
+        }
+    }
+
+    /**
+     * 使出攻擊，傷害判定，打贏怪物的獎勵，及死亡顯示
+     * @param attack 攻擊方
+     * @param defence 防守方
+     */
+    public void attackAction(Creature attack, Creature defence){
+        int attackAtk = 0;
+        int defenceAtk = 0;
+
+        if (attack instanceof Player) {
+            attackAtk = attack.getStrength() + ((Player) attack).getWeapon().getAttack();
+            defenceAtk = defence.getStrength();
+        } else if (defence instanceof Player) {
+            defenceAtk = defence.getStrength() + ((Player) defence).getWeapon().getAttack();
+            attackAtk = attack.getStrength();
+        }
+
+        if(isHit(attack,defence)){
+            System.out.println(attack + " 使出攻擊");
+            int hurt = attackAtk-defence.getDefense();
+            System.out.println(attack + "造成" + hurt + "傷害");
+            //傷害計算
+            hurt = Math.max(0,hurt); //傷害為負的不扣血
+            defence.setHp(defence.getHp()-hurt);//更新守方血量
+            System.out.println(defence + "的hp剩下" + defence.getHp());
+            System.out.println(attack + "的hp剩下" + attack.getHp());
+
+            //若打敗守方
+            if(defence.getHp()<=0){
+                System.out.println(defence + "死了");
+                //若被打死的是怪，獲得獎勵
+                if(defence instanceof Enemy){
+                    Enemy enemy = (Enemy) defence;
+                    //玩家獲得經驗值
+                    System.out.println("獲得經驗值" + enemy.getExp());
+                    if(this.player.isReadyToLevelUp(enemy.getExp())){
+                        System.out.println("升級！");
+                    }
+                    this.player.addExp(enemy.getExp());
+                    //獲得寶藏
+                    Treasure prop = enemy.getDrops()[RANDOM.nextInt(2)];
+                    player.getTreasure(prop);
+                    System.out.println("獲得" + prop);
+                    //打贏boss去下一張圖
+                    if(enemy.getType()==EnemyType.ANIMAL_BOSS || enemy.getType()==EnemyType.MONSTER_BOSS){
+                        clearChangeMap();
+                        System.out.println("你打贏了boss來到了" + this.rpgMap);
+                    }
+                }
+            }
+        }else{
+            System.out.println(attack + "使出攻擊但沒打到");
         }
     }
 
