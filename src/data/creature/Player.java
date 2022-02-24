@@ -4,7 +4,6 @@ import data.treasure.Treasure;
 import data.treasure.weapon.*;
 import data.treasure.armor.*;
 import data.treasure.prop.*;
-import operate.Input;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,8 @@ public class Player extends Creature {
     private Prop[] accessories;
     private ArrayList<Prop> buffs;
     private int numOfItems;
-    private int weight;
+    private int maxWeight;
+    private int currWeight;
     private int upgradeExp;
     private boolean isBattling;
 
@@ -30,7 +30,8 @@ public class Player extends Creature {
         this.name = name;
         this.upgradeExp = 10;
         items = new Prop[5];
-        this.weight = strength * 6;
+        this.maxWeight = strength * 6;
+        this.currWeight = 0;
         buffs = new ArrayList<>();
         accessories = new Prop[DEFAULT_ACCESSORIES_NUM];
     }
@@ -88,8 +89,8 @@ public class Player extends Creature {
         return items;
     }
 
-    public int getWeight() {
-        return weight;
+    public int getMaxWeight() {
+        return maxWeight;
     }
 
     public int getUpgradeExp() {
@@ -105,31 +106,30 @@ public class Player extends Creature {
     }
 
     public void setWeapon(Weapon weapon) {
-        int armorWeight = (this.armor == null) ? 0 : this.armor.getWeight();
-        if (this.weapon != null) {
-            if (this.weight - armorWeight - weapon.getWeight() < 0) {
-                System.out.println("無法更換武器! 若換至新武器，您的負重將會超出上限!");
-                return;
-            } else {
-                this.weight += this.weapon.getWeight();
+        int currArmorWeight = (this.armor == null) ? 0 : this.armor.getWeight();
+        if (this.maxWeight - currArmorWeight - weapon.getWeight() < 0) {
+            System.out.println("無法更換武器! 若換至新武器，您的負重將會超出上限!");
+        } else {
+            if (this.weapon != null) {
+                this.currWeight += this.weapon.getWeight();
             }
+            this.weapon = weapon;
+            this.currWeight += this.weapon.getWeight();
         }
-//        this.weight -= weapon.getWeight();
-        this.weapon = weapon;
+
     }
 
     public void setArmor(Armor armor) {
-        int weaponWeight = (this.weapon == null) ? 0 : this.weapon.getWeight();
-        if (this.armor != null) {
-            if (this.weight - weaponWeight - armor.getWeight() < 0) {
-                System.out.println("無法更換防具! 若換至新防具，您的負重將會超出上限!");
-                return;
-            } else {
-                this.weight += this.armor.getWeight();
+        int currWeaponWeight = (this.weapon == null) ? 0 : this.weapon.getWeight();
+        if (this.maxWeight - currWeaponWeight - armor.getWeight() < 0) {
+            System.out.println("無法更換防具! 若換至新防具，您的負重將會超出上限!");
+        } else {
+            if (this.armor != null) {
+                this.currWeight -= this.armor.getWeight();
             }
+            this.armor = armor;
+            this.currWeight += this.armor.getWeight();
         }
-//        this.weight -= armor.getWeight();
-        this.armor = armor;
     }
 
     public void setItems(Prop[] items) {
@@ -148,8 +148,8 @@ public class Player extends Creature {
         }
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public void setMaxWeight(int maxWeight) {
+        this.maxWeight = maxWeight;
     }
 
     public void setUpgradeExp(int upgradeExp) {
@@ -161,7 +161,6 @@ public class Player extends Creature {
     }
 
     /**
-     *
      * @param treasure
      */
     public void getTreasure(Treasure treasure) {
@@ -177,8 +176,8 @@ public class Player extends Creature {
             setArmor(armor);
         } else if (treasure instanceof Prop) {
             prop = (Prop) treasure;
-            for(int i = 0; i < 5; i++) {
-                if (this.items[i] == null){
+            for (int i = 0; i < 5; i++) {
+                if (this.items[i] == null) {
                     this.items[i] = prop;
                     break;
                 }
@@ -209,12 +208,13 @@ public class Player extends Creature {
         this.defense += prop.getDefense();
         this.hit += prop.getHit();
         this.agile += prop.getAgile();
+
         //有作用回合限制
         if (prop.getTimes() > 0) {
             buffs.add(new Prop(prop));
         }
         //飾品類的反向道具
-        if (prop.getTimes() == -1) {
+        if (prop.getTimes() == -prop.getTimes() - 1) {
             buffs.add(new Prop(prop, 0));
         }
     }
@@ -246,6 +246,21 @@ public class Player extends Creature {
         }
     }
 
+    private static final int MONSTER_TYPE_BADGE = 0;
+    private static final int ANIMAL_TYPE_BADGE = 1;
+
+    /**
+     * 每回合戰鬥前跑一次，已經使用的徽章buff
+     */
+    public void accessoriesRun(Enemy enemy) {
+        if (enemy.getType() == EnemyType.ANIMAL_NORMAL || enemy.getType() == EnemyType.ANIMAL_BOSS) {
+            useProp(accessories[ANIMAL_TYPE_BADGE]);
+        }
+        if (enemy.getType() == EnemyType.MONSTER_NORMAL || enemy.getType() == EnemyType.MONSTER_BOSS) {
+            useProp(accessories[MONSTER_TYPE_BADGE]);
+        }
+    }
+
     @Override
     public String toString() {
         return name;
@@ -255,6 +270,8 @@ public class Player extends Creature {
      * 顯示玩家詳情
      */
     public void showDetail() {
+        int armorWeight = armor==null? 0: armor.getWeight();
+        int weaponWeight = weapon==null? 0: weapon.getWeight();
         System.out.println(name
                 + "\n等級：" + level
                 + "\n經驗值：" + exp + " / " + upgradeExp
@@ -263,9 +280,9 @@ public class Player extends Creature {
                 + "\n力量：" + strength
                 + "\n命中：" + hit
                 + "\n防禦：" + defense
-                + "\n負重：" + (weapon.getWeight() + armor.getWeight()) + " / " + this.weight
-                + "\n武器：" + (weapon==null? "無":weapon)
-                + "\n防具：" + (armor==null? "無":armor)
+                + "\n負重：" + (armorWeight+weaponWeight) + " / " + this.maxWeight
+                + "\n武器：" + (weapon == null ? "無" : weapon)
+                + "\n防具：" + (armor == null ? "無" : armor)
         );
     }
 
@@ -290,9 +307,7 @@ public class Player extends Creature {
      * @return 選到的道具
      */
     public Prop chooseItem(int index) {
-        Prop result = items[index];
-        this.getItems()[index] = null;
-        return result;
+        return items[index];
     }
 
 

@@ -26,6 +26,7 @@ public class Armor implements Treasure {
             int var10001 = i++;
             sb.append(var10001 + ". ");
             sb.append(armor);
+            sb.append(" " + armor.getDetail());
             sb.append("\n");
         }
 
@@ -62,8 +63,7 @@ public class Armor implements Treasure {
     }
 
     public String getDetail() {
-        String var10000 = this.getClass().getSimpleName();
-        return var10000 + " Weight: " + this.weight + ", Defense:" + this.defense;
+        return "重量: " + this.weight + ", 防禦:" + this.defense;
     }
 
     public static enum initialArmors {

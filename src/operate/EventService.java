@@ -6,6 +6,7 @@ import data.map.*;
 import data.creature.*;
 
 import data.treasure.Treasure;
+import data.treasure.prop.Prop;
 import data.treasure.weapon.Bow;
 import data.treasure.armor.LeatherArmor;
 import data.treasure.prop.HealingLotion;
@@ -79,6 +80,10 @@ public class EventService {
         return event;
     }
 
+    /**
+     * 戰鬥流程
+     * @param enemy 敵人
+     */
     public void battle(Enemy enemy) {
         if (enemy == null) {
             return;
@@ -98,11 +103,19 @@ public class EventService {
             } else if (select == 2) {
                 System.out.println("選擇要使用的道具(1~5道具 6.返回)：");
                 player.showItems();
-                int choose = Input.filterSelection(1, 6);
-                if(choose==6){
+                int chosenPropIndex = Input.filterSelection(1, 6);
+                if(chosenPropIndex==6){
                     continue;
                 }
-                player.useProp(player.chooseItem(choose-1));
+
+                Prop chosenProp = player.chooseItem(chosenPropIndex - 1);
+                System.out.println(chosenProp.getUsage()); //印出道具說明
+                System.out.println("確定使用道具? 1.是 2.否：");
+                select = Input.filterSelection(1, 2);
+                if(select==1) {
+                    player.useProp(player.chooseItem(chosenPropIndex - 1));
+                    player.getItems()[chosenPropIndex] = null;
+                }
 
             } else if (select == 3) {
                 if (isEscape(player, enemy)) {
@@ -123,10 +136,17 @@ public class EventService {
     private void attack(Creature first, Creature second) {
         //戰鬥開始
         while (first.getHp() > 0 && second.getHp() > 0) {
-            attackAction(first,second);
+            //跑徽章buff
+            if(first instanceof Enemy){
+               Enemy enemy = (Enemy) first;
+               player.accessoriesRun(enemy);
+            }else if(second instanceof Enemy){
+                Enemy enemy = (Enemy) second;
+                player.accessoriesRun(enemy);
+            }
             //先攻方攻擊
+            attackAction(first,second);
             Input.pauseAndContinue();
-            System.out.println();
 
             if(first.getHp() <= 0 || second.getHp() <= 0){
                 break;
@@ -136,6 +156,7 @@ public class EventService {
             player.buffArrayRun();
 
             Input.pauseAndContinue();
+            System.out.println("================");
         }
     }
 
@@ -161,10 +182,12 @@ public class EventService {
             int hurt = attackAtk-defence.getDefense();
             //傷害計算
             hurt = Math.max(0,hurt); //傷害為負的不扣血
-            System.out.println(attack + "造成" + hurt + "傷害");
+            System.out.println(attack + " 造成" + hurt + "傷害");
+            System.out.println("------------------");
             defence.setHp(defence.getHp()-hurt);//更新守方血量
             System.out.println(defence + "的hp剩下" + defence.getHp());
             System.out.println(attack + "的hp剩下" + attack.getHp());
+            System.out.println("------------------");
 
             //若打敗守方
             if(defence.getHp()<=0){
@@ -316,7 +339,7 @@ public class EventService {
         System.out.println("遇到岔路，你要往哪邊走呢？\n1.左邊 2.右邊 3.不走了回家");
         int input = Input.filterSelection(1, 3);
         if (input==3) {
-            System.out.println("回家吧！掰掰！");
+            System.out.println("你好狠心啊勇者，村民繼續過著痛苦的日子.....");
             System.exit(0);//好玩用的
         }
         this.rpgMap.go();

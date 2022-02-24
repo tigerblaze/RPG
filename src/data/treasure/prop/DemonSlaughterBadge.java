@@ -1,7 +1,7 @@
 package data.treasure.prop;
 
 /**
- * 惡魔屠殺者徽章
+ * 惡魔屠殺者徽章，編號Time：-1
  */
 public class DemonSlaughterBadge extends Badge{
     public DemonSlaughterBadge(){
@@ -11,6 +11,7 @@ public class DemonSlaughterBadge extends Badge{
         setAttack(1);
         setStrength(0);
         setHit(1);
+        setTimes(-1);
         setUsage("與魔物戰鬥時，+1攻擊力、+1命中");
         setIsBuff(false);
         setBuffRounds(0);

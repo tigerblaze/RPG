@@ -24,6 +24,7 @@ public abstract class Weapon implements Treasure {
             int var10001 = i++;
             sb.append(var10001 + ". ");
             sb.append(weapon);
+            sb.append("：" + weapon.getDetail());
             sb.append("\n");
         }
 
@@ -67,6 +68,6 @@ public abstract class Weapon implements Treasure {
     }
 
     public String getDetail() {
-        return this.name + " Weight: " + this.weight + ", Attack:" + this.attack;
+        return "重量: " + this.weight + ", 攻擊力:" + this.attack;
     }
 }

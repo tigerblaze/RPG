@@ -15,7 +15,7 @@ public abstract class Badge extends Prop{
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
         public static Badge.BadgeType randomMonster()  {
-            return VALUES.get(RANDOM.nextInt(SIZE));
+        return VALUES.get(RANDOM.nextInt(SIZE));
         }
     }
 }
