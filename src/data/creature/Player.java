@@ -29,7 +29,7 @@ public class Player extends Creature {
         super(5, 5, 5, 5, 5, 1, 0);
         this.name = name;
         this.upgradeExp = 10;
-        items = new Prop[5];
+        this.items = new Prop[5];
         this.weight = strength * 6;
         buffs = new ArrayList<>();
         accessories = new Prop[DEFAULT_ACCESSORIES_NUM];
