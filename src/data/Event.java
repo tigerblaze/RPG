@@ -1,5 +1,0 @@
-package data;
-
-public enum Event {
-    NOTHING, MEET_PASSIVE_ENEMY, MEET_ACTIVE_ENEMY, BRANCH, GET_TREASURE
-}

@@ -2,17 +2,17 @@ package data.creature;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 生物類，生物的基本屬性
  * @date 2022/2/14 下午 12:21
  */
 public class Creature {
-    private int hp;
-    private int agile;
-    private int strength;
-    private int hit;
-    private int defense;
-    private int level;
-    private int exp;
+    protected int hp;
+    protected int agile;
+    protected int strength;
+    protected int hit;
+    protected int defense;
+    protected int level;
+    protected int exp;
 
     public Creature(int hp,int agile,int strength,int hit,int defense,
                     int level, int exp){
@@ -29,18 +29,38 @@ public class Creature {
         return hp;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    /**
+     * 若hp小於0，為0
+     * @param newHp 新hp
+     */
+    public void setHp(int newHp) {
+        if(newHp<0){
+            this.hp = 0;
+        }else {
+            this.hp = newHp;
+        }
     }
 
+    /**
+     * 回傳敏捷
+     * @return
+     */
     public int getAgile() {
         return agile;
     }
 
+    /**
+     * 設置敏捷
+     * @param agile
+     */
     public void setAgile(int agile) {
         this.agile = agile;
     }
 
+    /**
+     *回傳力量
+     * * @return
+     */
     public int getStrength() {
         return strength;
     }
@@ -80,5 +100,4 @@ public class Creature {
     public void setExp(int exp) {
         this.exp = exp;
     }
-
 }

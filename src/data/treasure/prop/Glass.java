@@ -1,5 +1,9 @@
-package data.item;
-public class Glass extends Prop{/*玻璃*/
+package data.treasure.prop;
+
+/**
+ * 玻璃
+ */
+public class Glass extends Prop{
     public Glass(){
         setPrice(1);
         setHp(0);
@@ -8,5 +12,8 @@ public class Glass extends Prop{/*玻璃*/
         setStrength(0);
         setHit(0);
         setUsage("");
+        setIsBuff(false);
+        setBuffRounds(0);
+        setName("玻璃");
     }
 }

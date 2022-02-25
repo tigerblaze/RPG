@@ -1,13 +1,16 @@
 package data.creature;
 
-import data.item.*;
+import data.treasure.prop.*;
 
 /**
  * @author Lillian
- * @Description
+ * @Description 黃大仙
  * @date 2022/2/15 下午 03:43
  */
 public class Weasel extends Enemy{
+    /**
+     * 原始數值
+     */
     private static final int HP = 4;
     private static final int AGILE = 5;
     private static final int STRENGTH = 6;
